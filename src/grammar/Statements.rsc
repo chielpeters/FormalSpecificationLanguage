@@ -6,6 +6,6 @@ syntax Statement
   = bracket "(" Statement ")"
   | ifstat: Expr "?" Statement ":" Statement
   | casestat: "case" Id "{" (Literal "=\>" Statement)+ "}" ";"
-  | sumstat : "sum" "(" Expr "|" Type? Id "\<-" Expr ")" ";"
+  | sumstat : "sum" "(" Expr "|" Var "\<-" Expr ")" ";"
   | exprStat: Expr ";"
   ;  

@@ -7,8 +7,9 @@ start syntax Functions =
   Function+ functions;
 
 syntax Function = 
-  FunctionName name "[" { Argument ","}* args "]" ":" Type rtype "=" Statement s;
+  FunctionName name "[" Arguments  args "]" ":" Type rtype "=" Statement s;
 
+syntax Arguments = { Argument ","}* args;
 syntax Argument = Type t Var var;
 
 

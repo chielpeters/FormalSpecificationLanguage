@@ -10,7 +10,7 @@ syntax Expr
     | oldproperty: "old" PropertyOfVar
     | var: Var 
     | literal: Literal
-    | makelist: "[" Expr "..." Expr "]"
+    | makeSet: "{" Expr "..." Expr "}"
     | functioncall: FunctionName "[" {Expr ","}* "]"
   )
   > not: "!" Expr

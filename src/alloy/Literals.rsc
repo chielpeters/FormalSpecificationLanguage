@@ -76,3 +76,14 @@ int month2Int(Month m){
     case "Dec" : return 12;
   }
 }
+
+str type2alloy((Type)`Boolean`) = "Bool";
+str type2alloy((Type)`Integer`) = "Int";
+str type2alloy((Type)`Period`) = "Period";
+str type2alloy((Type)`Percentage`) = "Percentage";
+str type2alloy((Type)`map[<Type key> : <Type val>]`) = "<type2alloy(key)> -\> <type2alloy(val)>";
+str type2alloy((Type)`list[ <Type t>]`) = "seq <type2alloy(t)>";
+str type2alloy((Type)`set[ <Type t>]`) = "set <type2alloy(t)>";
+
+
+

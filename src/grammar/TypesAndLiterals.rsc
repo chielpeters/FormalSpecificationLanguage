@@ -6,7 +6,6 @@ syntax Literal
   = integer: Int
   | boolean: Bool
   | period: Period
-  | string: String
   | date: Int day Month month
   | percentage: Percentage
   | mapLit: "("  MapElements ")"

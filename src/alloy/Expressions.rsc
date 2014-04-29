@@ -4,6 +4,11 @@ import grammar::Expressions;
 import alloy::Literals;
 import String;
 
+
+str expression2alloy((Expr) `{ <Expr lhs> ... <Expr rhs> }`){
+	return "Filter[<expression2alloy(lhs)>,<expression2alloy(rhs)>]";
+}
+
 str expression2alloy((Expr) `<FunctionName name> [ <{Expr ","}* expressions> ]`){
 	str res =  "<name>";
  	res += ( "[" | it +  expression2alloy(exp) + "," | exp <- expressions) + "]";
@@ -37,11 +42,11 @@ str expression2alloy((Expr) `! <Expr e>`){
 }
 
 str expression2alloy((Expr) `<Expr lhs> * <Expr rhs>`){
-  	return expression2alloy(lhs) + " * "  + expression2alloy(rhs);
+  	return expression2alloy(lhs) + ".mul["  + expression2alloy(rhs) + "]";
 }
 
 str expression2alloy((Expr) `<Expr lhs> / <Expr rhs>`){
-  	return expression2alloy(lhs) + " / " + expression2alloy(rhs);
+  	return expression2alloy(lhs) + ".div[" + expression2alloy(rhs) + "]";
 }
 
 str expression2alloy((Expr) `<Expr lhs> % <Expr rhs>`){
