@@ -6,6 +6,7 @@ syntax Literal
   = integer: Int
   | boolean: Bool
   | period: Period
+  | freq : Frequency
   | date: Int day Month month
   | percentage: Percentage
   | mapLit: "("  MapElements ")"
@@ -22,6 +23,7 @@ syntax Type
   | period: "Period"
   | integer: "Integer"
   | date: "Date"
+  | feq : "Frequency"
   | percentage: "Percentage"
   | maptype: "map" "[" Type ":" Type "]"
   | listtype: "list" "[" Type "]"

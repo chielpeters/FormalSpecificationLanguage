@@ -1,4 +1,4 @@
-module grammar::LibraryFunctions
+module grammar::Functions
 
 extend grammar::Statements;
 extend grammar::Lexical;

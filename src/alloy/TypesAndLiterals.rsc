@@ -1,34 +1,26 @@
-module alloy::Literals
+module alloy::TypesAndLiterals
 
 import grammar::Lexical;
 import grammar::TypesAndLiterals;
 import ParseTree;
 import String;
 
-str literal2alloy((Literal)`<Percentage p>`){
-	return replaceAll(replaceAll(replaceAll("<p>",".",""),"%","")," ","");
-}
-
-str literal2alloy((Literal)`<Int i>`){
-	return "<i>";
-}
+str literal2alloy((Literal)`<Int i>`) = "<i>";
+str literal2alloy((Literal)`<Period p>`) = "<p>";
+str literal2alloy((Literal)`<Frequency f>`) = "<f>";
 
 str literal2alloy((Literal)`<Bool b>`){
- 	return "<b>";
+ 	if((Bool)`True` := b) return "0=0"; else return "1=0";
 }
 
-str literal2alloy((Literal)`<Period p>`){
-  	str period = "<p>";
-  	switch(period){
-	    case "Day" 		:   return "1";
-    	case "Month" :   return "2";
-    	case "Quarter" : return "3";
-  		case "Year" : return "4";
-  	}
+//TODO Change The way Percentage are dealt with
+str literal2alloy((Literal)`<Percentage p>`){
+	return "getPercentage[" + replaceAll(replaceAll(replaceAll("<p>",".",""),"%","")," ","") + "]";
 }
+
 
 str literal2alloy((Literal)`<Int days> <Month m>`){
-	return "newDate[<days>,<month2Int(m)>]";
+	return "getDate[<days>,<month2Int(m)>,0]";
 }
 
 str literal2alloy((Literal)`( <MapElements elems> )`){
@@ -46,10 +38,8 @@ str literal2alloy((Literal)`[<{Literal ","}* l>]`){
 	 	res += SeqElem2alloy(elem,i) + " + ";
 		i = i+1;
 	}
-	  
 	return replaceLast(res + "}"," + ","");
 } 
-
 
 str SeqElem2alloy(Literal a,i){
  return "<i>" + "-\>" + literal2alloy(a);
@@ -79,11 +69,14 @@ int month2Int(Month m){
 
 str type2alloy((Type)`Boolean`) = "Bool";
 str type2alloy((Type)`Integer`) = "Int";
+str type2alloy((Type)`Date`) = "Date";
 str type2alloy((Type)`Period`) = "Period";
 str type2alloy((Type)`Percentage`) = "Percentage";
 str type2alloy((Type)`map[<Type key> : <Type val>]`) = "<type2alloy(key)> -\> <type2alloy(val)>";
 str type2alloy((Type)`list[ <Type t>]`) = "seq <type2alloy(t)>";
 str type2alloy((Type)`set[ <Type t>]`) = "set <type2alloy(t)>";
+str type2alloy((Type)`Frequency`) = "Frequency";
+
 
 
 

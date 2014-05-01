@@ -1,9 +1,17 @@
 module alloy::Functions
 
-import grammar::LibraryFunctions;
+import grammar::Functions;
 import alloy::Statements;
-import alloy::Functions;
+import alloy::Literals;
 import String;
+
+
+//Boolean Functions are predicates
+str function2alloy((Function)`<FunctionName name> [ <Arguments args> ] : Boolean = <Statement s>`){
+	return 	"pred <name>[<functionargs2alloy(args)>] { \n  " +
+	" <statement2alloy(s)> \n" +
+	"}";
+}
 
 str function2alloy(Function f){
 	return 	"fun <f.name>[<functionargs2alloy(f.args)>] : <type2alloy(f.rtype)> { \n  " +
@@ -12,7 +20,7 @@ str function2alloy(Function f){
 }
 
 str functionargs2alloy((Arguments)`<Arguments args>`){
-	return replaceLast((""| it + "<type2alloy(arg.t)> : <arg.var> ," | arg <- args.args),",","");
+	return replaceLast((""| it +  "<arg.var> : <type2alloy(arg.t)>," | arg <- args.args),",","");
 }
 
 
