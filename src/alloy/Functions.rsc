@@ -2,13 +2,13 @@ module alloy::Functions
 
 import grammar::Functions;
 import alloy::Statements;
-import alloy::Literals;
+import alloy::TypesAndLiterals;
 import String;
 
 
 //Boolean Functions are predicates
 str function2alloy((Function)`<FunctionName name> [ <Arguments args> ] : Boolean = <Statement s>`){
-	return 	"pred <name>[<functionargs2alloy(args)>] { \n  " +
+	return 	"pred <name>[<functionargs2alloy(args)>] { \n" +
 	" <statement2alloy(s)> \n" +
 	"}";
 }

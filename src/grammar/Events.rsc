@@ -1,4 +1,4 @@
-module grammar::LEvents
+module grammar::Events
 
 extend grammar::Expressions;
 extend grammar::Lexical;
