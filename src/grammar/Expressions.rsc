@@ -10,6 +10,7 @@ syntax Expr
     | oldproperty: "old" PropertyOfVar
     | var: Var 
     | literal: Literal
+    | inset: Expr "in" Expr
     | makeSet: "{" Expr "..." Expr "}"
     | functioncall: FunctionName "[" {Expr ","}* "]"
   )
