@@ -12,12 +12,14 @@ syntax Signature = eventsignature: EventName name "(" {EventArgument ","}* args"
 syntax EventArgument = eventargument: Type t Var var ("=" Expr exp)?;
 
 syntax Parameters = "parameters" ":" Arguments args;
-syntax Pre = "preconditions" ":" {Condition ","}* preconditions;
-syntax Post = "postconditions" ":" {Condition ","}* postconditions;
+syntax Pre = "preconditions" ":" {Cond ","}* preconditions;
+syntax Post = "postconditions" ":" {Cond ","}* postconditions;
 
 
-syntax Condition =
+syntax Cond =
 	expression: Expr
-	| multipleEventCalls: "(" Condition "|" Var "\<-" Expr ")"
-	| eventcall: EventName "(" {Expr ","}* ")" "[" {Expr ","}* "]"
+	| multipleEventCalls: "(" Cond "|" Var "\<-" Expr ")"
+	| eventcall: EventName "(" ExprList ")" "[" ExprList "]"
 	;
+
+syntax ExprList = {Expr ","}* exprs;

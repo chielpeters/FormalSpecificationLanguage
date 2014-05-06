@@ -6,17 +6,16 @@ extend grammar::Lexical;
 syntax Expr
   = bracket "(" Expr ")"
   > non-assoc (	
-    | property: Var var "." Field
+    | property: PropertyOfVar
     | oldproperty: "old" PropertyOfVar
-    | var: Var 
     | literal: Literal
-    | inset: Expr "in" Expr
     | makeSet: "{" Expr "..." Expr "}"
     | functioncall: FunctionName "[" {Expr ","}* "]"
   )
   > not: "!" Expr
   > left (
     mul: Expr "*" Expr
+    | inset: Expr "in" Expr
     | div: Expr "/" Expr
     | modulo: Expr "%" Expr
   )

@@ -1,5 +1,6 @@
-Handle Arguments { Argument ","}* in concrete matching?
-Concatanate case statements in an if statement
 Comments not working
 Keywords on lexicals?
 ("[" {Expr ","}* "]")? Priorities
+concrete match on a part of a syntax
+replaceLast in the reducer
+How to check empty iterable list?

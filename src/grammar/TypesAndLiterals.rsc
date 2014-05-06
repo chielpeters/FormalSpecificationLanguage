@@ -6,6 +6,7 @@ syntax Literal
   = integer: Int
   | boolean: Bool
   | period: Period
+  | var : Var
   | freq : Frequency
   | date: Int day Month month
   | percentage: Percentage

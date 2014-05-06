@@ -5,6 +5,7 @@ import alloy::VarMap;
 import alloy::Functions;
 import alloy::Expressions;
 import List;
+import IO;
 import String;
 
 alias EventMap = map[EventName,Event];
@@ -26,6 +27,13 @@ str event2alloy((Event)`<Signature sig> <Parameters param> <Pre pre> <Post post>
 	'}";
 }
 
+str event2alloy((Event)`<Signature sig> <Pre pre> <Post post>`, VarMap vm){
+	return "pred SavingsAccount.<sig.name> [s : SavingsAccount] {
+	'  <precond2alloy(pre,vm)>  
+	'  <postcond2alloy(post,vm)>
+	'}";
+}
+
 VarMap getVarMap(list[Expr] args, Event event){
 	int i = 0;
 	VarMap vm = ();
@@ -42,7 +50,19 @@ str precond2alloy(Pre pre,VarMap vm){
 	return replaceLast((""| it + condition2alloy(cond,vm) + " and " | cond <- pre.preconditions)," and ","");
 }
 str postcond2alloy(Post post,VarMap vm){
-	return replaceLast((""| condition2alloy(cond,vm) + " and " | cond <- post.postconditions)," and ","");
+	return replaceLast((""| it + condition2alloy(cond,vm) + " and " | cond <- post.postconditions)," and ","");
 }
 
-str condition2alloy((Condition)`<Expr exp>`,VarMap vm) = expression2alloy(exp,vm);
+
+str condition2alloy((Cond)`<Expr exp>`,VarMap vm) = expression2alloy(exp,vm);
+//TODO eventArgs
+str condition2alloy((Cond)`<EventName name> ( <ExprList eventArgs> ) [ <ExprList param> ]`,VarMap vm){
+	return "<name> [this,s<exprlist2alloy(param,vm)>]";
+}
+
+str exprlist2alloy(ExprList explist,VarMap vm){
+	if("<explist>" != ""){
+		return replaceLast(( "," | it + expression2alloy(e,vm) + "," | e <- explist.exprs),",","");
+	}
+	return "";
+}

@@ -2,51 +2,58 @@ module alloy::TypesAndLiterals
 
 import grammar::Lexical;
 import grammar::TypesAndLiterals;
+import alloy::VarMap;
+import alloy::Expressions;
 import ParseTree;
 import String;
 
-str literal2alloy((Literal)`<Int i>`) = "<i>";
-str literal2alloy((Literal)`<Period p>`) = "<p>";
-str literal2alloy((Literal)`<Frequency f>`) = "<f>";
+str literal2alloy((Literal)`<Int i>`,VarMap vm) = "<i>";
+str literal2alloy((Literal)`<Period p>`,VarMap vm) = "<p>";
+str literal2alloy((Literal)`<Frequency f>`,VarMap vm) = "<f>";
 
-str literal2alloy((Literal)`<Bool b>`){
+str literal2alloy((Literal)`<Bool b>`,VarMap vm){
  	if((Bool)`True` := b) return "0=0"; else return "1=0";
 }
 
+str literal2alloy((Literal)`<Var v>`,VarMap vm){
+ 	if(v in vm) return expression2alloy(vm[v],vm); else return "<v>";
+}
+
+
 //TODO Change The way Percentage are dealt with
-str literal2alloy((Literal)`<Percentage p>`){
+str literal2alloy((Literal)`<Percentage p>`,VarMap vm){
 	return "getPercentage[" + replaceAll(replaceAll(replaceAll("<p>",".",""),"%","")," ","") + "]";
 }
 
 
-str literal2alloy((Literal)`<Int days> <Month m>`){
+str literal2alloy((Literal)`<Int days> <Month m>`,VarMap vm){
 	return "getDate[<days>,<month2Int(m)>,0]";
 }
 
-str literal2alloy((Literal)`( <MapElements elems> )`){
-	return replaceLast(("{"| it + mapElem2String(elem) + " + " | elem <- elems.elems)," + ","") + "}";
+str literal2alloy((Literal)`( <MapElements elems> )`,VarMap vm){
+	return replaceLast(("{"| it + mapElem2String(elem,vm) + " + " | elem <- elems.elems)," + ","") + "}";
 }
 
-str literal2alloy((Literal)`{<{Literal ","}* l>}`){
-	return replaceLast(("{"| it + literal2alloy(elem) + " + " | elem <- l)," + ","") + "}";
+str literal2alloy((Literal)`{<{Literal ","}* l>}`,VarMap vm){
+	return replaceLast(("{"| it + literal2alloy(elem,vm) + " + " | elem <- l)," + ","") + "}";
 } 
 
-str literal2alloy((Literal)`[<{Literal ","}* l>]`){
+str literal2alloy((Literal)`[<{Literal ","}* l>]`,VarMap vm){
 	int i = 0;
 	str res = "{";
 	for(elem <- l){
-	 	res += SeqElem2alloy(elem,i) + " + ";
+	 	res += SeqElem2alloy(elem,i,vm) + " + ";
 		i = i+1;
 	}
 	return replaceLast(res + "}"," + ","");
 } 
 
-str SeqElem2alloy(Literal a,i){
- return "<i>" + "-\>" + literal2alloy(a);
+str SeqElem2alloy(Literal a,int i,VarMap vm){
+ return "<i>" + "-\>" + literal2alloy(a,vm);
 }
 
-str mapElem2String(MapElement m){
-	  return literal2alloy(m.key) +  "-\>" + literal2alloy(m.val);
+str mapElem2String(MapElement m,VarMap vm){
+	  return literal2alloy(m.key,vm) +  "-\>" + literal2alloy(m.val,vm);
 } 
 
 int month2Int(Month m){
