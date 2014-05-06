@@ -7,7 +7,9 @@ import String;
 
 str expression2alloy((Expr) `(<Expr e>)`,VarMap vm) = "( " + expression2alloy(e,vm) + " )";
 //TODO Change to accept both properties
-str expression2alloy((Expr) `<PropertyOfVar p>`,VarMap vm) = "<p>";
+str expression2alloy((Expr) `<Var v> . <Field f>`,VarMap vm){
+	if(v in vm) return expression2alloy(vm[v],vm) + ".<f>"; else return "<v>.<f>";
+}
 str expression2alloy((Expr) `old <PropertyOfVar p>`,VarMap vm) = "<p>";
 str expression2alloy((Expr) `<Var v>`,VarMap vm){
 	if(v in vm) return expression2alloy(vm[v],vm); else return "<v>";

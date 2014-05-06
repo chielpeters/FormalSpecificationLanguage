@@ -6,7 +6,7 @@ extend grammar::Lexical;
 syntax Expr
   = bracket "(" Expr ")"
   > non-assoc (	
-    | property: PropertyOfVar
+    | property: Var var "." Field
     | oldproperty: "old" PropertyOfVar
     | var: Var 
     | literal: Literal

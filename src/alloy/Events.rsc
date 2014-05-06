@@ -20,8 +20,9 @@ str event2alloy(EventName name, list[Expr] args, EventMap evMap){
 }
 
 str event2alloy((Event)`<Signature sig> <Parameters param> <Pre pre> <Post post>`, VarMap vm){
-	return "pred <sig.name> [ <functionargs2alloy(param.args)>] {
-	'  <precond2alloy(pre,vm)> =\> <postcond2alloy(post,vm)>
+	return "pred SavingsAccount.<sig.name> [s : SavingsAccount, <functionargs2alloy(param.args)>] {
+	'  <precond2alloy(pre,vm)>  
+	'  <postcond2alloy(post,vm)>
 	'}";
 }
 
