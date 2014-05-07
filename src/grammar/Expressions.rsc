@@ -10,7 +10,7 @@ syntax Expr
     | oldproperty: "old" PropertyOfVar
     | literal: Literal
     | makeSet: "{" Expr "..." Expr "}"
-    | functioncall: FunctionName "[" {Expr ","}* "]"
+    | functioncall: FunctionName "[" ExprList "]"
   )
   > not: "!" Expr
   > left (
@@ -37,5 +37,7 @@ syntax Expr
   
 syntax PropertyOfVar = 
     propertyOfVar : Var var "." Field
-    | propertyOfVar : Var var "." Field "[" {Expr ","}* "]"
+    | propertyOfVar : Var var "." Field "[" ExprList "]"
     ;
+    
+syntax ExprList = {Expr ","}* exprs;

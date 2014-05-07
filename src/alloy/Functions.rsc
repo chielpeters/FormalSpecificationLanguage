@@ -6,6 +6,9 @@ import alloy::VarMap;
 import alloy::TypesAndLiterals;
 import String;
 
+str functions2alloy(Functions functions){
+	return ("" | it + function2alloy(f) + "\n\n" | f <- functions.functions);
+}
 
 //Boolean Functions are predicates
 str function2alloy((Function)`<FunctionName name> [ <Arguments args> ] : Boolean = <Statement s>`){

@@ -4,21 +4,9 @@ import grammar::Events;
 import alloy::VarMap;
 import alloy::Functions;
 import alloy::Expressions;
+import alloy::TypesAndLiterals;
 import List;
-import IO;
 import String;
-
-alias EventMap = map[EventName,Event];
-
-
-EventMap getEvents(Events events){
-	return ( () | it + (event.sig.name : event)| event <- events);
-} 
-
-str event2alloy(EventName name, list[Expr] args, EventMap evMap){
-	VarMap VarMap = getVarMap(args,evMap[name]);
-	return event2alloy(evMap[name],VarMap);
-}
 
 str event2alloy((Event)`<Signature sig> <Parameters param> <Pre pre> <Post post>`, VarMap vm){
 	return "pred SavingsAccount.<sig.name> [s : SavingsAccount, <functionargs2alloy(param.args)>] {
@@ -34,17 +22,17 @@ str event2alloy((Event)`<Signature sig> <Pre pre> <Post post>`, VarMap vm){
 	'}";
 }
 
-VarMap getVarMap(list[Expr] args, Event event){
-	int i = 0;
-	VarMap vm = ();
-	for(arg <- event.sig.args){
-		if(i < size(args)){vm += (arg.var : args[i]);} else 
-		if((EventArgument)`<Type t> <Var v> = <Expr exp>` := arg){ vm += (arg.var : exp);}
-		else throw "Event Variable is undefined <arg.var>";
-		i+=1;
-	}
-	return vm;
+str event2alloy((Event)`<Signature sig> <Post post>`, VarMap vm){
+	return "pred SavingsAccount.<sig.name> [s : SavingsAccount] { 
+	'  <postcond2alloy(post,vm)>
+	'}";
 }
+
+str event2alloy((Event)`<Signature sig>`, VarMap vm){
+	return "pred SavingsAccount.<sig.name> [s : SavingsAccount] {
+	'}";
+}
+
 
 str precond2alloy(Pre pre,VarMap vm){
 	return replaceLast((""| it + condition2alloy(cond,vm) + " and " | cond <- pre.preconditions)," and ","");
@@ -56,13 +44,13 @@ str postcond2alloy(Post post,VarMap vm){
 
 str condition2alloy((Cond)`<Expr exp>`,VarMap vm) = expression2alloy(exp,vm);
 //TODO eventArgs
-str condition2alloy((Cond)`<EventName name> ( <ExprList eventArgs> ) [ <ExprList param> ]`,VarMap vm){
-	return "<name> [this,s<exprlist2alloy(param,vm)>]";
-}
+str condition2alloy((Cond)`<EventName name> (<ExprList eventargs> ) [ <ExprList param> ]`,VarMap vm) = "<name> [this,s,<exprlist2alloy(param,vm)>]";
+str condition2alloy((Cond)`( <Cond c> | <Var v> \<- <Expr e> )`,VarMap vm)= "all <literal2alloy(v,vm)> : <expression2alloy(e,vm)> | <condition2alloy(c,vm)>";
 
-str exprlist2alloy(ExprList explist,VarMap vm){
-	if("<explist>" != ""){
-		return replaceLast(( "," | it + expression2alloy(e,vm) + "," | e <- explist.exprs),",","");
-	}
-	return "";
+/*
+str lifecyclecond2alloy(EventName name){
+	if(contains("<name>","close")) return "s.opened = 1 and this.opened = 0";
+	else if(contains("<name>","open")) return "s.opened = 0 and this.opened = 1";
+	else return "s.opened = 1 and this.opened = 1"; 
 }
+*/

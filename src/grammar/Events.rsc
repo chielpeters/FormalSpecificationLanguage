@@ -18,8 +18,7 @@ syntax Post = "postconditions" ":" {Cond ","}* postconditions;
 
 syntax Cond =
 	expression: Expr
-	| multipleEventCalls: "(" Cond "|" Var "\<-" Expr ")"
+	| multipleEventCalls: "(" Cond!multipleEventCalls "|" Var "\<-" Expr ")"
 	| eventcall: EventName "(" ExprList ")" "[" ExprList "]"
 	;
 
-syntax ExprList = {Expr ","}* exprs;

@@ -9,21 +9,22 @@ lexical Int = [0-9]+ | "Inf";
 lexical String = "\"" ![\"]*  "\"";
 
 lexical FunctionName = Id;
+lexical SavingsAccountName = Id;
 lexical EventName = Id;
 lexical Var = Id;
 lexical Field = Id;
 lexical Id = ([a-z A-Z 0-9 _] !<< [a-z A-Z][a-z A-Z 0-9 _]* !>> [a-z A-Z 0-9 _]) \ Keywords;
 
 keyword Keywords = "Jan" | "Feb" | "Mar" | "Apr" | "May" | "Jun" | "Jul" | "Aug" | "Sep" | "Oct" | "Nov" | "Dec" | 
-					"Daily" | "Monthly" | "Quarterly" | "Day" | "Month" | "Quarter" | "Year" | "True" | "False" | 
-					"old" | "sum" | "case" | "Inf" | "in";
+					"Daily" | "Monthly" | "Quarterly" | "Yearly" | "Day" | "Month" | "Quarter" | "Year" | "True" | "False" | 
+					"old" | "sum" | "case" | "Inf" | "in"|"s";
 
-layout Standard = WhitespaceOrComment* !>> [\ \t\n\f\r] !>> "//";
-lexical Comment = @category="Comment" "//" ![\n\r]* $;
-syntax WhitespaceOrComment 
+layout Standard = WhitespaceOrComment* !>> [\ \t\n\f\r];
+lexical Comment = @category="Comment" "#" ![\n\r]* $;
+lexical WhitespaceOrComment 
   = whitespace: Whitespace
-  | comment: Comment
+  | Comment
   ;   
 lexical Whitespace 
-  = [\u0009-\u000D \u0020 \u0085 \u00A0 \u1680 \u180E \u2000-\u200A \u2028 \u2029 \u202F \u205F \u3000]
+  = [\ \t\n\f\r]
   ; 
