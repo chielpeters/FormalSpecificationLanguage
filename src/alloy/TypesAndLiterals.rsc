@@ -12,7 +12,7 @@ str literal2alloy((Literal)`<Int i>`,VarMap vm) = "<i>";
 str literal2alloy(Period p,VarMap vm) = "<p>";
 str literal2alloy((Literal)`<Period p>`,VarMap vm) = "<p>";
 str literal2alloy((Literal)`<Frequency f>`,VarMap vm) = "<f>";
-str literal2alloy((Literal)`<Bool b>`,VarMap vm){if((Bool)`True` := b) return "0=0"; else return "1=0";}
+str literal2alloy((Literal)`<Bool b>`,VarMap vm){if((Bool)`True` := b) return "{}"; else return "!{}";}
 str literal2alloy((Literal)`<Var v>`,VarMap vm) = literal2alloy(v,vm);
 str literal2alloy(Var v, VarMap vm){if(v in vm) return expression2alloy(vm[v],vm); else return "<v>";}
 str literal2alloy((Literal)`<Date d>`,VarMap vm) = "getDate[<d.day>,<month2Int(d.month)>,0]";

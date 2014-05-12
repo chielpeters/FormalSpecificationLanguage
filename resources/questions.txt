@@ -1,6 +1,4 @@
-The Comments in the grammar are not working.
-Keywords on lexicals?
-("[" {Expr ","}* "]")? Priorities
-concrete match on a part of a syntax
-replaceLast in the reducer
-How to check empty iterable list?
+concrete match on a part of a syntax => see ss
+replaceLast in the reducer => intercalate
+How to check empty iterable list? => concrete matching/string
+

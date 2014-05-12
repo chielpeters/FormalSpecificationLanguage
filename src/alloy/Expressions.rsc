@@ -41,11 +41,5 @@ str expression2alloy((Expr) `<Expr lhs> != <Expr rhs>`,VarMap vm) = expression2a
 str expression2alloy((Expr) `<Expr lhs> && <Expr rhs>`,VarMap vm) = expression2alloy(lhs,vm) + " and " + expression2alloy(rhs,vm);
 str expression2alloy((Expr) `<Expr lhs> || <Expr rhs>`,VarMap vm) = expression2alloy(lhs,vm) + " or " + expression2alloy(rhs,vm);
 
-str exprlist2alloy(ExprList explist,VarMap vm){
-    return intercalate(", ", [ expression2alloy(e) | e <- explist ]);
-	if("<explist>" != ""){
-		return replaceLast(( "" | it + expression2alloy(e,vm) + "," | e <- explist.exprs),",","");
-	}
-	return "";
-}
-list[Expr] exprlist2list(ExprList el) = [ e | e <- e1 ];
+str exprlist2alloy(ExprList explist,VarMap vm) = intercalate(", ", [ expression2alloy(e) | e <- explist.exprs ]);
+list[Expr] exprlist2list(ExprList el) = [ e | e <- el.exprs ];

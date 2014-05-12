@@ -6,7 +6,7 @@ extend grammar::Lexical;
 syntax Expr
   = bracket "(" Expr ")"
   > non-assoc (	
-    | property: PropertyOfVar
+    property: PropertyOfVar
     | oldproperty: "old" PropertyOfVar
     | literal: Literal
     | makeSet: "{" Expr "..." Expr "}"
@@ -14,7 +14,7 @@ syntax Expr
   )
   > not: "!" Expr
   > left (
-    mul: Expr "*" Expr
+    mul: Expr lhs "*" Expr rhs
     | inset: Expr "in" Expr
     | div: Expr "/" Expr
     | modulo: Expr "%" Expr
@@ -40,5 +40,6 @@ syntax PropertyOfVar =
     | propertyOfVar : Var var Fields f "[" ExprList "]"
     ;
     
-syntax Fields = ("." Field)+;
+syntax Fields = DotField+ fields;
+syntax DotField = "." Var f;
 syntax ExprList = {Expr ","}* exprs;

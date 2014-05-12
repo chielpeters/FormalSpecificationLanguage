@@ -21,7 +21,7 @@ keyword Keywords = "Jan" | "Feb" | "Mar" | "Apr" | "May" | "Jun" | "Jul" | "Aug"
 					"old" | "sum" | "case" | "Inf" | "in";
 
 layout Standard = WhitespaceOrComment* !>> [\ \t\n\f\r];
-lexical Comment = @category="Comment" "#" ![\n\r]* $;
+lexical Comment = @category="Comment" "#" ![\n]* $;
 lexical WhitespaceOrComment 
   = whitespace: Whitespace
   | Comment
