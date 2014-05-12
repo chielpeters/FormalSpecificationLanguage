@@ -8,6 +8,7 @@ import alloy::Events;
 import grammar::Expressions;
 import grammar::Events;
 import grammar::SavingsAccount;
+import grammar::TypesAndLiterals;
 
 str savingsaccount2alloy(SavingsAccount sa){
 	loc b = |file:///C:/Users/Chiel/Dropbox/Thesis/DSL/LibraryEventsFormatted.txt|;
@@ -26,7 +27,7 @@ EventMap getEvents(Events events){
 
 VarMap getVarMap(list[Expr] args, Event event){
 	int i = 0;
-	VarMap vm = ();
+	VarMap vm = thisNow();
 	for(arg <- event.sig.args){
 		if(i < size(args)){vm += (arg.var : args[i]);} else 
 		if((EventArgument)`<Type t> <Var v> = <Expr exp>` := arg){ vm += (arg.var : exp);}

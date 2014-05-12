@@ -36,8 +36,9 @@ syntax Expr
   ;
   
 syntax PropertyOfVar = 
-    propertyOfVar : Var var "." Field
-    | propertyOfVar : Var var "." Field "[" ExprList "]"
+    propertyOfVar : Var var Fields f
+    | propertyOfVar : Var var Fields f "[" ExprList "]"
     ;
     
+syntax Fields = ("." Field)+;
 syntax ExprList = {Expr ","}* exprs;

@@ -8,7 +8,7 @@ syntax Literal
   | period: Period
   | var : Var
   | freq : Frequency
-  | date: Int day Month month
+  | date: Date
   | percentage: Percentage
   | mapLit: "("  MapElements ")"
   | listLit: "[" LiteralList  "]"
@@ -24,7 +24,7 @@ syntax Type
   | period: "Period"
   | integer: "Integer"
   | date: "Date"
-  | feq : "Frequency"
+  | feq : "Freq"
   | percentage: "Percentage"
   | maptype: "map" "[" Type ":" Type "]"
   | listtype: "list" "[" Type "]"

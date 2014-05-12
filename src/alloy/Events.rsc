@@ -35,7 +35,7 @@ str event2alloy((Event)`<Signature sig>`, VarMap vm){
 
 
 str precond2alloy(Pre pre,VarMap vm){
-	return replaceLast((""| it + condition2alloy(cond,vm) + " and " | cond <- pre.preconditions)," and ","");
+	return intercalate(" and ", [ condition2alloy(cond,vm+oldNow()) | cond <- pre.preconditions ]);
 }
 str postcond2alloy(Post post,VarMap vm){
 	return replaceLast((""| it + condition2alloy(cond,vm) + " and " | cond <- post.postconditions)," and ","");

@@ -7,13 +7,15 @@ import alloy::Expressions;
 import ParseTree;
 import String;
 
+str literal2alloy(Int i,VarMap vm) = "<i>";
 str literal2alloy((Literal)`<Int i>`,VarMap vm) = "<i>";
+str literal2alloy(Period p,VarMap vm) = "<p>";
 str literal2alloy((Literal)`<Period p>`,VarMap vm) = "<p>";
 str literal2alloy((Literal)`<Frequency f>`,VarMap vm) = "<f>";
 str literal2alloy((Literal)`<Bool b>`,VarMap vm){if((Bool)`True` := b) return "0=0"; else return "1=0";}
 str literal2alloy((Literal)`<Var v>`,VarMap vm) = literal2alloy(v,vm);
 str literal2alloy(Var v, VarMap vm){if(v in vm) return expression2alloy(vm[v],vm); else return "<v>";}
-str literal2alloy((Literal)`<Int days> <Month m>`,VarMap vm) = "getDate[<days>,<month2Int(m)>,0]";
+str literal2alloy((Literal)`<Date d>`,VarMap vm) = "getDate[<d.day>,<month2Int(d.month)>,0]";
 str literal2alloy((Literal)`( <MapElements elems> )`,VarMap vm){
 	return replaceLast(("{"| it + mapElem2String(elem,vm) + " + " | elem <- elems.elems)," + ","") + "}";
 }
@@ -70,7 +72,7 @@ str type2alloy((Type)`Percentage`) = "Percentage";
 str type2alloy((Type)`map[<Type key> : <Type val>]`) = "<type2alloy(key)> -\> <type2alloy(val)>";
 str type2alloy((Type)`list[ <Type t>]`) = "seq <type2alloy(t)>";
 str type2alloy((Type)`set[ <Type t>]`) = "set <type2alloy(t)>";
-str type2alloy((Type)`Frequency`) = "Frequency";
+str type2alloy((Type)`Freq`) = "Frequency";
 
 
 

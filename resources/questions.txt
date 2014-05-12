@@ -1,4 +1,4 @@
-Comments not working
+The Comments in the grammar are not working.
 Keywords on lexicals?
 ("[" {Expr ","}* "]")? Priorities
 concrete match on a part of a syntax
