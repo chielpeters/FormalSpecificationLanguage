@@ -5,4 +5,4 @@ extend grammar::Events;
 extend grammar::Lexical;
 
 start syntax SavingsAccount = "SavingsAccount" SavingsAccountName name IEvent+ events;
-syntax IEvent = EventName name "(" ExprList exprlist ")";
+syntax IEvent = EventName name "(" ExprList el ")";

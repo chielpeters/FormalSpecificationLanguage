@@ -2,3 +2,4 @@ concrete match on a part of a syntax => see ss
 replaceLast in the reducer => intercalate
 How to check empty iterable list? => concrete matching/string
 
+How to remove opt() if you know it exists

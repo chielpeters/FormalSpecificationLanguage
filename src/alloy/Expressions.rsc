@@ -1,7 +1,7 @@
 module alloy::Expressions
 
 import grammar::Expressions;
-import alloy::VarMap;
+import alloy::Info;
 import alloy::TypesAndLiterals;
 import String;
 

@@ -2,7 +2,7 @@ module alloy::TypesAndLiterals
 
 import grammar::Lexical;
 import grammar::TypesAndLiterals;
-import alloy::VarMap;
+import alloy::Info;
 import alloy::Expressions;
 import ParseTree;
 import String;

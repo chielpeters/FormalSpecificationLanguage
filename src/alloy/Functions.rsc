@@ -2,7 +2,7 @@ module alloy::Functions
 
 import grammar::Functions;
 import alloy::Statements;
-import alloy::VarMap;
+import alloy::Info;
 import alloy::TypesAndLiterals;
 import String;
 
