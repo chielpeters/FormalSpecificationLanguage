@@ -1,8 +1,8 @@
 module parse
 
+import vis::Figure;
+import vis::ParseTree;
+import vis::Render;
 import ParseTree;
-import grammar::Functions;
-loc a = |file:///C:/Users/Chiel/Dropbox/Thesis/DSL/LibraryFunctionsFormatted.txt|;
-loc b = |file:///C:/Users/Chiel/Dropbox/Thesis/DSL/LibraryEventsFormatted.txt|;
-public Functions parse(str f) = parse(#Functions,f);
-public Functions parse(loc f) = parse(#Functions,f);
+
+public void viewTree(Tree tree) = render(space(visParsetree(tree),std(gap(8,30)),std(resizable(true))));

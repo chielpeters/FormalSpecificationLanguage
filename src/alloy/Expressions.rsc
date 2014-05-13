@@ -8,6 +8,7 @@ import List;
 
 str expression2alloy((Expr) `(<Expr e>)`,VarMap vm) = "( " + expression2alloy(e,vm) + " )";
 //TODO REFACTOR
+str expression2alloy((Expr)`<Var v>`,VarMap vm) = (v in vm) ? expression2alloy(vm[v],vm) : "<v>"; 
 str expression2alloy((Expr) `<PropertyOfVar pv>`,VarMap vm){
 	if(pv.var in vm && (PropertyOfVar)`<Var v> <Fields f>` :=pv) return expression2alloy(vm[v],vm) + "<f>";  
 	else if(pv.var in vm && (PropertyOfVar)`<Var v> <Fields f> [<ExprList el>]` :=pv) return expression2alloy(vm[v],vm) + "<f>" + "[" +exprlist2alloy(el,vm) + "]";  

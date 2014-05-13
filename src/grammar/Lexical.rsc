@@ -20,12 +20,12 @@ keyword Keywords = "Jan" | "Feb" | "Mar" | "Apr" | "May" | "Jun" | "Jul" | "Aug"
 					"Daily" | "Monthly" | "Quarterly" | "Yearly" | "Day" | "Month" | "Quarter" | "Year" | "True" | "False" | 
 					"old" | "sum" | "case" | "Inf" | "in";
 
-layout Standard = WhitespaceOrComment* !>> [\ \t\n\f\r];
+layout Standard = WhitespaceOrComment* !>> [\t-\n\r\ ];
 lexical Comment = @category="Comment" "#" ![\n]* $;
 lexical WhitespaceOrComment 
   = whitespace: Whitespace
   | Comment
   ;   
-lexical Whitespace 
-  = [\ \t\n\f\r]
+lexical Whitespace
+  = [\t-\n\r\ ]
   ; 
