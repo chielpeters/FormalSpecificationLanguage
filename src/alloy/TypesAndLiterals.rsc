@@ -2,43 +2,22 @@ module alloy::TypesAndLiterals
 
 import grammar::Lexical;
 import grammar::TypesAndLiterals;
-import alloy::Info;
+import alloy::util::Info;
 import alloy::Expressions;
 import ParseTree;
 import String;
 
+
+str literal2alloy((Literal)`<Int i>`,VarMap vm) = literal2alloy(i,vm);
+str literal2alloy((Int)`Inf`,VarMap vm) = "max[Int]";
 str literal2alloy(Int i,VarMap vm) = "<i>";
-str literal2alloy((Literal)`<Int i>`,VarMap vm) = "<i>";
+str literal2alloy((Literal)`<Period p>`,VarMap vm) = literal2alloy(p,vm);
 str literal2alloy(Period p,VarMap vm) = "<p>";
-str literal2alloy((Literal)`<Period p>`,VarMap vm) = "<p>";
 str literal2alloy((Literal)`<Frequency f>`,VarMap vm) = "<f>";
-str literal2alloy((Literal)`<Bool b>`,VarMap vm){if((Bool)`True` := b) return "{}"; else return "!{}";}
-str literal2alloy((Literal)`<Var v>`,VarMap vm) = literal2alloy(v,vm);
-str literal2alloy(Var v, VarMap vm){if(v in vm) return expression2alloy(vm[v],vm); else return "<v>";}
+str literal2alloy((Literal)`True`,VarMap vm) = "{}";
+str literal2alloy((Literal)`False`,VarMap vm) = "!{}";
 str literal2alloy((Literal)`<Date d>`,VarMap vm) = "getDate[<d.day>,<month2Int(d.month)>,0]";
-str literal2alloy((Literal)`( <MapElements elems> )`,VarMap vm){
-	return replaceLast(("{"| it + mapElem2String(elem,vm) + " + " | elem <- elems.elems)," + ","") + "}";
-}
-str literal2alloy((Literal)`{<{Literal ","}* l>}`,VarMap vm){
-	return replaceLast(("{"| it + literal2alloy(elem,vm) + " + " | elem <- l)," + ","") + "}";
-} 
-str literal2alloy((Literal)`[<{Literal ","}* l>]`,VarMap vm){
-	int i = 0;
-	str res = "{";
-	for(elem <- l){
-	 	res += SeqElem2alloy(elem,i,vm) + " + ";
-		i = i+1;
-	}
-	return replaceLast(res + "}"," + ","");
-} 
 
-str SeqElem2alloy(Literal a,int i,VarMap vm){
- return "<i>" + "-\>" + literal2alloy(a,vm);
-}
-
-str mapElem2String(MapElement m,VarMap vm){
-	  return literal2alloy(m.key,vm) +  "-\>" + literal2alloy(m.val,vm);
-} 
 
 //TODO Change The way Percentage are dealt with
 str literal2alloy(per:(Literal)`<Percentage p>`,VarMap vm){

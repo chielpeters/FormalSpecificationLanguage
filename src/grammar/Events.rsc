@@ -4,7 +4,7 @@ extend grammar::Functions;
 extend grammar::Expressions;
 extend grammar::Lexical;
 
-start syntax Events = events: Event+ events;
+start syntax Events = events: Event* events;
 
 syntax Event = event: Signature sig Parameters? param Pre? pre  Post? post;
 
@@ -19,6 +19,6 @@ syntax Post = "postconditions" ":" {Cond ","}* postconditions;
 syntax Cond =
 	expression: Expr
 	| multipleEventCalls: "(" Cond!multipleEventCalls "|" Var "\<-" Expr ")"
-	| eventcall: EventName "(" ExprList ")" "[" ExprList "]"
+	| eventcallWithArgs: EventName "(" ExprList ")" "[" ExprList "]"
 	;
 

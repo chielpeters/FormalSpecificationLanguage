@@ -8,9 +8,8 @@ syntax Expr
   > non-assoc (	
     property: PropertyOfVar
     | oldproperty: "old" PropertyOfVar
-    | literal: Literal
+    | literal: LiteralPlus
     | makeSet: "{" Expr "..." Expr "}"
-    | functioncall: FunctionName "[" ExprList "]"
   )
   > not: "!" Expr
   > left (
@@ -40,6 +39,16 @@ syntax PropertyOfVar =
     | propertyOfVar : Var var Fields f "[" ExprList "]"
     ;
     
-syntax Fields = DotField+ fields;
+syntax Fields = DotField* fields;
 syntax DotField = "." Var f;
 syntax ExprList = {Expr ","}* exprs;
+
+syntax LiteralPlus =
+  lit: Literal 
+  | mapLit: "("  MapElements ")"
+  | listLit: "[" ExprList  "]"
+  | setLit: "{" ExprList "}"
+  ;
+
+syntax MapElements = {MapElement ","}* elems;
+syntax MapElement = Expr key ":" Expr val;

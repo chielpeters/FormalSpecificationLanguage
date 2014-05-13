@@ -6,18 +6,10 @@ syntax Literal
   = integer: Int
   | boolean: Bool
   | period: Period
-  | var : Var
   | freq : Frequency
   | date: Date
   | percentage: Percentage
-  | mapLit: "("  MapElements ")"
-  | listLit: "[" LiteralList  "]"
-  | setLit: "{" LiteralList "}"
-  ;
-
-syntax MapElements = {MapElement ","}* elems;
-syntax MapElement = Literal key ":" Literal val;
-syntax LiteralList = {Literal ","}* lits;
+;
 
 syntax Type
   = booleantype:  "Boolean"

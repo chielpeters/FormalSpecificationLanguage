@@ -1,23 +1,35 @@
 module alloy::SavingsAccount
 
 import ParseTree;
-import List;
-import alloy::Info;
+import alloy::util::Info;
 import alloy::Expressions;
+import alloy::calledevents::Events;
 import alloy::Events;
+import alloy::Functions;
 import grammar::Expressions;
 import grammar::Events;
+import grammar::Functions;
 import grammar::SavingsAccount;
-import grammar::TypesAndLiterals;
 
 str savingsaccount2alloy(SavingsAccount sa){
-	loc b = |file:///C:/Users/Chiel/Dropbox/Thesis/DSL/LibraryEventsFormatted.txt|;
+	loc b = |file:///C:/Users/Chiel/Dropbox/Thesis/DSL/LibraryEvents.txt|;
+	loc f = |file:///C:/Users/Chiel/Dropbox/Thesis/DSL/LibraryFunctions.txt|;
+	//TODO START[#Events]
 	EventMap em = getEventMap(parse(#Events,b));
-	return ("" | it + event2alloy(ev.name,exprlist2list(ev.el),em) + "\n\n"  | ev <- sa.events);
+	str res = ("" | it + event2alloy(ev.name,exprlist2list(ev.el),em) + "\n\n"  | ev <- sa.events);
+	calledEvents = [ em[e.name] | e <- sa.events]; 
+	
+	res += addComment("CALLED EVENTS");
+	res += calledevents2alloy(calledEvents,em);
+	
+	res += addComment("FUNCTIONS");
+	res += functions2alloy(parse(#Functions,f));
+	
+	return res;
 }
 
 str event2alloy(EventName name, list[Expr] args, EventMap em){
-	VarMap vm = setVarMap(args,evMap[name]);
+	VarMap vm = setVarMap(args,em[name]);
 	Info i = initInfo(name,vm,em);
-	return event2alloy(evMap[name],i);
+	return event2alloy(em[name],i);
 }

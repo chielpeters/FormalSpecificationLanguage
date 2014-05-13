@@ -2,9 +2,10 @@ module alloy::Functions
 
 import grammar::Functions;
 import alloy::Statements;
-import alloy::Info;
+import alloy::util::Info;
 import alloy::TypesAndLiterals;
 import String;
+import List;
 
 str functions2alloy(Functions functions){
 	return ("" | it + function2alloy(f) + "\n\n" | f <- functions.functions);
@@ -25,8 +26,8 @@ str function2alloy(Function f){
 	"}";
 }
 
-str functionargs2alloy((Arguments)`<Arguments args>`){
-	return replaceLast((""| it +  "<arg.var> : <type2alloy(arg.t)>," | arg <- args.args),",","");
+str functionargs2alloy(Arguments args){
+	return intercalate(", " , ["<arg.var> : <type2alloy(arg.t)>" | arg <- args.args]);
 }
 
 

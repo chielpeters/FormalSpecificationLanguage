@@ -2,7 +2,7 @@ module alloy::Statements
 
 import alloy::Expressions;
 import alloy::TypesAndLiterals;
-import alloy::Info;
+import alloy::util::Info;
 import grammar::Statements;
 import String;
 import IO;

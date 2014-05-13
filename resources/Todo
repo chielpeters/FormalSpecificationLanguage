@@ -1,2 +1,4 @@
 Fix percentages to allow nothing behind the .
 Property of Var + old expression
+
+Event Calls without Event Args get parsed as function calls
