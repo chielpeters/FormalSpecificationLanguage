@@ -7,21 +7,10 @@ import String;
 import List;
 
 str expression2alloy((Expr) `(<Expr e>)`,VarMap vm) = "( " + expression2alloy(e,vm) + " )";
-//TODO REFACTOR
-str expression2alloy((Expr)`<Var v>`,VarMap vm) = (v in vm) ? expression2alloy(vm[v],vm) : "<v>"; 
-str expression2alloy((Expr) `<PropertyOfVar pv>`,VarMap vm){
-	if(pv.var in vm && (PropertyOfVar)`<Var v> <Fields f>` :=pv) return expression2alloy(vm[v],vm) + "<f>";  
-	else if(pv.var in vm && (PropertyOfVar)`<Var v> <Fields f> [<ExprList el>]` :=pv) return expression2alloy(vm[v],vm) + "<f>" + "[" +exprlist2alloy(el,vm) + "]";  
-	else if((PropertyOfVar)`<Var v> <Fields f>`:=pv) return "<v><f>"; 
-	else if((PropertyOfVar)`<Var v> <Fields f> [<ExprList el> ]`:=pv) return "<v><f>" + "[" + exprlist2alloy(el,vm) +"]";
-	else throw "PropertyofVar not caught";
-	
-}
-str expression2alloy((Expr) `old <PropertyOfVar p>`,VarMap vm){
-	if((PropertyOfVar)`this <Fields f>` := p) return "s<f>" ;
-	if((PropertyOfVar)`this <Fields f> [<ExprList el>]` := p) return "s<f>[<exprlist2alloy(el,vm+oldNow())>]";
-	return "<p>"; 
-}
+str expression2alloy((Expr)`<Var v>`,VarMap vm) = var2alloy(v,vm);
+str expression2alloy((Expr)`<Var v> [ <ExprList el> ]`,VarMap vm) = var2alloy(v,vm) + "[" + exprlist2alloy(el,vm) + "]";
+str expression2alloy((Expr) `<PropertyOfVar pv>`,VarMap vm) = propertyofvar2alloy(pv,vm);
+str expression2alloy((Expr) `old <PropertyOfVar p>`,VarMap vm) = propertyofvar2alloy(pv,vm+oldNow());
 str expression2alloy((Expr) `<LiteralPlus l>`,VarMap vm) = literalplus2alloy(l,vm);
 str expression2alloy((Expr) `{ <Expr lhs> ... <Expr rhs> }`,VarMap vm) = "Filter[<expression2alloy(lhs,vm)>,<expression2alloy(rhs,vm)>]";
 str expression2alloy((Expr) `! <Expr e>`,VarMap vm) = "!" + expression2alloy(e,vm);
@@ -42,21 +31,24 @@ str expression2alloy((Expr) `<Expr lhs> != <Expr rhs>`,VarMap vm) = expression2a
 str expression2alloy((Expr) `<Expr lhs> && <Expr rhs>`,VarMap vm) = expression2alloy(lhs,vm) + " and " + expression2alloy(rhs,vm);
 str expression2alloy((Expr) `<Expr lhs> || <Expr rhs>`,VarMap vm) = expression2alloy(lhs,vm) + " or " + expression2alloy(rhs,vm);
 
-str exprlist2alloy(ExprList explist,VarMap vm) = intercalate(", ", [ expression2alloy(e,vm) | e <- explist.exprs ]);
-list[Expr] exprlist2list(ExprList el) = [ e | e <- el.exprs ];
-
 str literalplus2alloy((LiteralPlus)`<Literal l>`,VarMap vm) = literal2alloy(l,vm);
 str literalplus2alloy((LiteralPlus)`( <MapElements elems> )`,VarMap vm) = "{" + intercalate(", ", [ mapelem2alloy(elem,vm) | elem <- elems.elems]) + "}";
-str literalplus2alloy((LiteralPlus)`{<ExprList el>}`,VarMap vm) = "{" + exprlist2alloy(el) + "}";
-str literalplus2alloy((LiteralPlus)`[<ExprList el>]`,VarMap vm){
-	int i = 0;
-	str res = "{";
-	for(elem <- l){
-	 	res += seqelem2alloy(elem,i,vm) + " + ";
-		i = i+1;
-	}
-	return replaceLast(res + "}"," + ","");
-} 
-str seqelem2alloy(Literal a,int i,VarMap vm) = "<i>" + "-\>" + literal2alloy(a,vm);
-str mapelem2alloy(MapElement m,VarMap vm) = expression2alloy(m.key,vm) +  "-\>" + expression2alloy(m.val,vm);
+str literalplus2alloy((LiteralPlus)`{<ExprList el>}`,VarMap vm) = "{" + exprlist2alloy(el,vm) + "}";
+str literalplus2alloy((LiteralPlus)`[<ExprList el>]`,VarMap vm) = "{" + intercalate(" + ", [seqelem2alloy(e,i,vm)| <i,e> <- enumerate(l)]) + "}";
 
+str seqelem2alloy(Expr a,int i,VarMap vm) = "<i>" + "-\>" + expression2alloy(a,vm);
+str mapelem2alloy(MapElement m,VarMap vm) = expression2alloy(m.key,vm) +  "-\>" + expression2alloy(m.val,vm);
+str exprlist2alloy(ExprList explist,VarMap vm) = intercalate(", ", [ expression2alloy(e,vm) | e <- explist.exprs ]);
+
+str propertyofvar2alloy((PropertyOfVar)`<Var v> <Fields f>`,VarMap vm) = var2alloy(v) + "<f>";
+str propertyofvar2alloy((PropertyOfVar)`<Var v> <Fields f> [<ExprList el> ]`,VarMap vm) = var2alloy(v) + "<f>" + "[" + exprlist2alloy(el) + "]";
+str var2alloy(Var v,VarMap vm) = (v in vm) ? expression2alloy(vm[v],vm) : "<v>"; 
+
+
+list[Expr] exprlist2list(ExprList el) = [ e | e <- el.exprs ];
+list[tuple[int, Expr]] enumerate(ExprList el){
+	int n =0;
+	list[tuple[int, Expr]] l = [];
+	for(e <- el.exprs){ n+=1;l += [<n,e>];}
+	return l;
+}
