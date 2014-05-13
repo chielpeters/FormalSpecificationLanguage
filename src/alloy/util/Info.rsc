@@ -11,6 +11,8 @@ alias EventMap = map[EventName,Event];
 alias Info = tuple[EventName name, VarMap vm, EventMap em];
 
 Info initInfo(EventName name, VarMap vm, EventMap em) = <name, vm, em>;
+Info initInfo(EventName name, list[Expr] args, EventMap em) = <name,setVarMap(args,em[name]),em>;
+
 Info addVars(Info i, VarMap vm) = <i.name, i.vm+vm, i.em>;
 
 Info changeEventName(EventName name,Info i) = <name,i.vm,i.em>;
