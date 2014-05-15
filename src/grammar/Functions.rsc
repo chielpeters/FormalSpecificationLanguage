@@ -5,7 +5,7 @@ extend grammar::Lexical;
 
 start syntax Functions = Function+ functions;
 
-syntax Function = 
+syntax Function = @Foldable
   FunctionName name "[" Arguments  args "]" ":" Type rtype "=" Statement s;
 
 syntax Arguments = { Argument ","}* args;

@@ -3,11 +3,15 @@ module alloy::TypesAndLiterals
 import grammar::Lexical;
 import grammar::TypesAndLiterals;
 import alloy::util::Info;
-import String;
-
+import String; 
+import IO;
+import util::Math;
 
 str literal2alloy((Int)`Inf`,VarMap vm) = "max[Int]";
-str literal2alloy(Int i,VarMap vm) = "<i>";
+str literal2alloy(Int i,VarMap vm){
+	if(toInt("<i>") > pow(2,8)){throw "Due to limited bounds the Integer can not be higher than 2^8";} 
+	else return "<i>";
+}
 str literal2alloy(Period p,VarMap vm) = "<p>";
 
 str literal2alloy((Literal)`<Int i>`,VarMap vm) = literal2alloy(i,vm);

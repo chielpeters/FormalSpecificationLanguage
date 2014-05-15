@@ -18,8 +18,8 @@ str expr2alloy((Expr) `<Expr lhs> in <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm)
 str expr2alloy((Expr) `<Expr lhs> * <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".mul["  + expr2alloy(rhs,vm) + "]";
 str expr2alloy((Expr) `<Expr lhs> / <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".div[" + expr2alloy(rhs,vm) + "]";
 str expr2alloy((Expr) `<Expr lhs> % <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".rem[" + expr2alloy(rhs,vm) + "]";
-str expr2alloy((Expr) `<Literal date> + <Int i> * <Period p>`,VarMap vm) = literal2alloy(date,vm) + ".add[" + literal2alloy(i,vm) + "," + literal2alloy(p,vm) + "]";
-str expr2alloy((Expr) `<Expr lhs> + <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".add[" + expr2alloy(rhs,vm) + "]";
+str expr2alloy((Expr) `<Literal date> + <Int i> * <Period p>`,VarMap vm) = literal2alloy(date,vm) + ".plus[" + literal2alloy(i,vm) + "," + literal2alloy(p,vm) + "]";
+str expr2alloy((Expr) `<Expr lhs> + <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".plus[" + expr2alloy(rhs,vm) + "]";
 str expr2alloy((Expr) `<Literal date> - <Int i> * <Period p>`,VarMap vm) = literal2alloy(date,vm) + ".sub[" + literal2alloy(i,vm) + "," + literal2alloy(p,vm) + "]";
 str expr2alloy((Expr) `<Expr lhs> - <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".sub[" + expr2alloy(rhs,vm) + "]";
 str expr2alloy((Expr) `<Expr lhs> \< <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".lt[ " + expr2alloy(rhs,vm)+ "]";
@@ -32,9 +32,9 @@ str expr2alloy((Expr) `<Expr lhs> && <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm)
 str expr2alloy((Expr) `<Expr lhs> || <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + " or " + expr2alloy(rhs,vm);
 
 str literalplus2alloy((LiteralPlus)`<Literal l>`,VarMap vm) = literal2alloy(l,vm);
-str literalplus2alloy((LiteralPlus)`( <MapElements elems> )`,VarMap vm) = "{" + intercalate(", ", [ mapelem2alloy(elem,vm) | elem <- elems.elems]) + "}";
+str literalplus2alloy((LiteralPlus)`( <MapElements elems> )`,VarMap vm) = "{" + intercalate("+ ", [ mapelem2alloy(elem,vm) | elem <- elems.elems]) + "}";
 str literalplus2alloy((LiteralPlus)`{<ExprList el>}`,VarMap vm) = "{" + exprlist2alloy(el,vm) + "}";
-str literalplus2alloy((LiteralPlus)`[<ExprList el>]`,VarMap vm) = "{" + intercalate(" + ", [seqelem2alloy(e,i,vm)| <i,e> <- enumerate(el)]) + "}";
+str literalplus2alloy((LiteralPlus)`[<ExprList el>]`,VarMap vm) = "{" + intercalate(" , ", [seqelem2alloy(e,i,vm)| <i,e> <- zip(size(exprlist2list(el)),exprlist2list(el))]) + "}";
 
 str seqelem2alloy(Expr a,int i,VarMap vm) = "<i>" + "-\>" + expr2alloy(a,vm);
 str mapelem2alloy(MapElement m,VarMap vm) = expr2alloy(m.key,vm) +  "-\>" + expr2alloy(m.val,vm);
@@ -46,9 +46,3 @@ str var2alloy(Var v,VarMap vm) = (v in vm) ? expr2alloy(vm[v],vm) : "<v>";
 
 
 list[Expr] exprlist2list(ExprList el) = [ e | e <- el.exprs ];
-list[tuple[int, Expr]] enumerate(ExprList el){
-	int n =0;
-	list[tuple[int, Expr]] l = [];
-	for(e <- el.exprs){ l += [<n,e>];n+=1;}
-	return l;
-}

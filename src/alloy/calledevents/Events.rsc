@@ -8,7 +8,7 @@ import alloy::Events;
 import List;
 import String;
 
-str calledevents2alloy(list[Event] evs,EventMap em) =  intercalate("\n",[ calledevent2alloy(e,initInfo(e.sig.name,(),em)) | e <- evs]);
+str calledevents2alloy(list[Event] evs,EventMap em) =  intercalate("",[ calledevent2alloy(e,initInfo(e.sig.name,(),em)) | e <- evs]);
 str calledevent2alloy(Event e,Info i){
 	str res = "";
 	if(/Pre pre := e)  res += calledprecond2alloy(pre,i);

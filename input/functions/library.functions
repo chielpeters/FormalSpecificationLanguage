@@ -1,0 +1,32 @@
+################################################################
+# Date Functions
+################################################################
+
+isPayOutDate[Date date, Date payoutdate, Freq freq] : Boolean =
+	case freq {
+		Daily => True;
+		Monthly => date.days == payoutdate.days;
+		Quarterly => date.days == payoutdate.days && (payoutdate.month - date.month) % 3 == 0;
+		Yearly => date.days == payoutdate.days && date.month == payoutdate.month;
+	};
+
+	
+##################################################################
+# Interest rate Functions
+##################################################################
+
+#TODO how to read from the map
+rate[map[Integer : Percentage] interestRates, Integer amount] : Percentage = 1.1%;
+
+interest[Integer maximum, map[Integer : Percentage] interestRates, map[Date : Integer] balance, Date start, Date end] : Integer =
+	sum(min[balance[date]*rate[interestRates,balance[date]],maximum]/daysInYear[date] | date <- {start ... end});
+
+interest[Integer maximum, map[Integer : Percentage] interestRates, Percentage bonusrate, map[Date : Integer] balance, Date start, Date end] : Integer =
+	balance[start] <= balance[end] ? sum((min[balance[date],maximum]*(rate[interestRates,balance[date]]+bonusrate))/daysInYear[date] | date <- {start ... end}); : interest[maximum,interestRates,balance,start,end];
+
+##################################################################
+# Penalty Functions for Withdrawal and Deposits
+##################################################################
+
+noPenalty[Integer yearsLeft] : Percentage = 0.0%;
+Penalty[Integer yearsLeft] : Percentage = min[7.1% , 1.1%*yearsLeft];

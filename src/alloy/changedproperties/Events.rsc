@@ -11,7 +11,7 @@ import List;
 
 str notchangedproperties2alloy(Event e, EventMap em,str old,str new){
 	Properties ps = notChangedProperties(e,em);
-	str s = "//PROPERTY CONDITIONS \n<old>.balance in <new>.balance\n";
+	str s = "//PROPERTY CONDITIONS \n<balancePropertyCondition(old,new)>";
 	return s + intercalate("\n",[ "<new>.<p> = <old>.<p>" | p <-ps]);
 	
 }
@@ -28,3 +28,4 @@ Properties changedProperties((Cond)`<Expr exp>`,EventMap em) = changedProperties
 Properties changedProperties((Cond)`<EventName name> (<ExprList eventargs> ) [ <ExprList param> ]`,EventMap em) = changedProperties(em[name],em);
 Properties changedProperties((Cond)`( <Cond c> | <Var v> \<- <Expr e> )`,EventMap em) = changedProperties(c,em);
 
+str balancePropertyCondition(str old, str new) = "<old>.balance in <new>.balance\n";

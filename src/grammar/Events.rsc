@@ -6,7 +6,7 @@ extend grammar::Lexical;
 
 start syntax Events = events: Event* events;
 
-syntax Event = event: Signature sig Parameters? param Pre? pre  Post? post;
+syntax Event = @Foldable event: Signature sig Parameters? param Pre? pre  Post? post;
 
 syntax Signature = eventsignature: EventName name "(" {EventArgument ","}* args")";
 syntax EventArgument = eventargument: Type t Var var ("=" Expr exp)?;

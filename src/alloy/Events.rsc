@@ -2,6 +2,7 @@ module alloy::Events
 
 import grammar::Events;
 import alloy::util::Info;
+import alloy::util::StringTemplates;
 import alloy::Functions;
 import alloy::Expressions;
 import alloy::changedproperties::Events;
@@ -23,5 +24,3 @@ str postcond2alloy(Post post,Info i) = intercalate(" \n", [ cond2alloy(cond,i) |
 str cond2alloy((Cond)`<Expr exp>`,Info i) = expr2alloy(exp,i.vm);
 str cond2alloy((Cond)`<EventName name> (<ExprList eventargs> ) [ <ExprList param> ]`,Info i) = "<i.name>_<name>[this,s,<exprlist2alloy(param,i.vm)>]";
 str cond2alloy((Cond)`( <Cond c> | <Var v> \<- <Expr e> )`,Info i)= "all <var2alloy(v,i.vm)> : <expr2alloy(e,i.vm)> | <cond2alloy(c,i)>";
-
-str addComment(str comment) = "// <comment> \n";
