@@ -17,28 +17,29 @@ import grammar::SavingsAccount;
 void savingsaccount2alloy(SavingsAccount sa, bool log){
 	loc b = |file:///C:/Users/Chiel/Dropbox/Thesis/DSL/LibraryEvents.txt|;
 	loc f = |file:///C:/Users/Chiel/Dropbox/Thesis/DSL/LibraryFunctions.txt|;
-	//TODO START[#Events]
-	Events evs = parse(#start[Events],b);
-	EventMap em = getEventMap(b);
+
+	Events evs = parse(#Events,b);
+	EventMap em = getEventMap(evs);
 	events = [ em[e.name] | e <- sa.events]; 
+	
 	str body = addMLComment("EVENTS");
 	body += ("" | it + event2alloy(em[ev.name],initInfo(ev.name,exprlist2list(ev.el),em)) + "\n\n"  | ev <- sa.events);
-	
 	
 	body += addMLComment("CALLED EVENTS");
 	body += calledevents2alloy(events,em);
 	
+	Functions funcs = parse(#Functions,f);
+	CalledFunctions cf = {};
+	for(/Var v := events){ cf += [FunctionName]"<v>";}
+	for(ev <- sa.events){ for(/Var v := ev.el){ cf += [FunctionName]"<v>";}};
 	body += addMLComment("FUNCTIONS");
-	Functions funcs = parse(#start[Functions],f);
-	body += functions2alloy(funcs);
+	body += functions2alloy(funcs,cf);
 	
 	body += addMLComment("FACT");
 	body += fact2alloy(events);
 	
 	loc alloyFile = getAlloyFileLoc(sa.name);
-	
 	writeToAlloy(alloyFile,sa.name,body);
-	
 	if(log) println(body);
 }
 

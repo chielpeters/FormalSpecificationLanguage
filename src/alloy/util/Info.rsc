@@ -9,6 +9,7 @@ import List;
 alias VarMap = map[Var,Expr];
 alias EventMap = map[EventName,Event];
 alias Info = tuple[EventName name, VarMap vm, EventMap em];
+alias CalledFunctions = set[FunctionName];
 
 Info initInfo(EventName name, VarMap vm, EventMap em) = <name, vm, em>;
 Info initInfo(EventName name, list[Expr] args, EventMap em) = <name,setVarMap(args,em[name]),em>;

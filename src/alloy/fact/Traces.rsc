@@ -6,8 +6,8 @@ import alloy::fact::Params;
 
 str fact2alloy(list[Event] evs){
 return "fact traces {
-	'  all s: SavingsAccount - last | let s\' = next[s]{
-	'    advance[s.now,s\'.now]
+	'  all old: SavingsAccount - last | let new = next[old]{
+	'    advance[old.now,new.now]
 	'    <vardecl2alloy(evs)> <events2alloy(evs)>
 	'  }
 	'}\n";

@@ -1,9 +1,15 @@
+########################################################
+# OPEN
+########################################################
+
+How to remove #start[]? 
+
+########################################################
+# DONE
+########################################################
 concrete match on a part of a syntax => see ss
 replaceLast in the reducer => intercalate
 How to check empty iterable list? => concrete matching/string
-
-
-How to handle large number of Optionals>
-How to remove opt() if you know it exists when ...?
-How to remove #start[]?
-Keep track of reducer iterator?
+Keep track of reducer iterator? => zip
+How to handle large number of Optionals => see StackOverflow
+How to remove opt() if you know it exists when ...? => see StackOverflow

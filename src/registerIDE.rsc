@@ -48,7 +48,7 @@ public java void startAlloy(str t);
 /**************************************************
 * EVENTS
 **************************************************/
-str EVENTS_EXTENSION = "events";
+str EVENTS_EXTENSION = "evs";
 str EVENTS_LANGUAGE = "Events";
 
 void registerEvents(){
@@ -58,9 +58,20 @@ void registerEvents(){
 /**************************************************
 * EVENTS
 **************************************************/
-str FUNCTIONS_EXTENSION = "functions";
+str FUNCTIONS_EXTENSION = "fs";
 str FUNCTIONS_LANGUAGE = "Functions";
 
 void registerFunctions(){
 	registerLanguage(FUNCTIONS_LANGUAGE,FUNCTIONS_EXTENSION,parseFunctions);
+}
+
+/**************************************************
+* INVARIANTS
+**************************************************/
+
+str INVARIANTS_EXTENSION = "inv";
+str INVARIANTS_LANGUAGE = "Functions";
+
+void registerFunctions(){
+	registerLanguage(INVARIANTS_LANGUAGE,INVARIANTS_EXTENSION,parseInvariants);
 }

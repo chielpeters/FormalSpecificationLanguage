@@ -7,7 +7,7 @@ import alloy::TypesAndLiterals;
 import String;
 import List;
 
-str functions2alloy(Functions functions) = ("" | it + function2alloy(f) + "\n\n" | f <- functions.functions);
+str functions2alloy(Functions functions, CalledFunctions cf) = ("" | it + function2alloy(f) + "\n\n" | f <- functions.functions, f.name in cf);
 
 //Boolean Functions are predicates
 str function2alloy((Function)`<FunctionName name> [ <Arguments args> ] : Boolean = <Statement s>`){

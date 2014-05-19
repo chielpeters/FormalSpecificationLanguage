@@ -10,6 +10,6 @@ str event2alloy(Event e) = "<e.sig.name>[<eventparam2alloy(e)>]";
 
 str eventparam2alloy(Event e){
 	params = getParamNames(eventParamToList(e));
-	return intercalate(", ", ["s","s\'"] + params);
+	return intercalate(", ", ["new","old"] + params);
 }
 

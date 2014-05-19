@@ -25,6 +25,7 @@ return "sig SavingsAccount {
 	'  now : one Date
 	'}{
 	'  opened in {0+1}
+	'  all d : prevs[now] + now | d in balance.Int
 	'}
 	'\n";
 }
