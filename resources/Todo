@@ -1,3 +1,2 @@
-Called Events do not form transitive closure, property conditions may be false
 Called Events twice, generates two same predicates
-Property conditions on called events 
+Event with _ creates problems?
