@@ -32,7 +32,7 @@ postconditions	: this.balance[date] == old this.balance[date] + amount*(1-penalt
 periodicDeposit()
 parameters		: Integer amount, Date date, Period period, Integer times
 preconditions	: amount > 0, date > now, times > 0
-postconditions	: (futureWithdrawal()[amount,date+period*i]| i <- {0...(times-1)})
+postconditions	: (futureWithdrawal()[amount,date+i*period]| i <- {0...(times-1)})
 
 cancelStandingOrder()
 parameters		: Date date
@@ -42,7 +42,7 @@ postconditions	: this.balance[date] == old this.balance[date]
 cancelPeriodicOrder()
 parameters		: Date date, Period period, Integer times
 preconditions	: date > now
-postconditions	: (cancelStandingOrder()[date+period*i]| i <- {0 ... (times-1)})
+postconditions	: (cancelStandingOrder()[date+i*period]| i <- {0 ... (times-1)})
 
 
 ##################################################################

@@ -4,6 +4,7 @@ import grammar::Events;
 import grammar::Lexical;
 import alloy::Expressions;
 import alloy::util::Info;
+import alloy::changedproperties::Events;
 import alloy::Events;
 import List;
 import String;
@@ -24,7 +25,6 @@ str calledcond2alloy((Cond)`( <Cond c> | <Var v> \<- <Expr e> )`,Info i) = calle
 str calledcond2alloy((Cond)`<EventName name> (<ExprList eventargs> ) [ <ExprList param> ]`,Info i){
 	EventName ename = [EventName]"<i.name>_<name>";
 	VarMap vm = setVarMap(exprlist2list(eventargs),i.em[name]);
-	Info newInfo = initInfo(ename,vm,i.em);
+	Info newInfo = initInfo(ename,vm,i.em,i.p);
 	return event2alloy(i.em[name],newInfo) + "\n";
 } 
-

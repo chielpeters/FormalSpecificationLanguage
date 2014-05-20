@@ -6,16 +6,23 @@ import alloy::util::StringTemplates;
 import alloy::Functions;
 import alloy::Expressions;
 import alloy::changedproperties::Events;
+import alloy::calledevents::Events;
 import List;
 import String;
 import ParseTree;
 
 str event2alloy(Event e, Info i){
-	return "pred SavingsAccount.<i.name> [ s : SavingsAccount <(/Parameters p := e.param) ? ","+functionargs2alloy(p.args):"">]{
+	str event = "pred SavingsAccount.<i.name> [ s : SavingsAccount <(/Parameters p := e.param) ? ","+functionargs2alloy(p.args):"">]{
 	'  <(/Pre pre := e.pre) ? addComment("PRECONDITIONS")+precond2alloy(pre,i):"">
 	'  <(/Post post := e.post) ? addComment("POSTCONDITIONS")+postcond2alloy(post,i):"">
-	'  <notchangedproperties2alloy(e,i.em,"s","this")>
-	'}";
+	'  <notchangedproperties2alloy(e,i.em,i.p,"s","this")>
+	'}\n";
+	
+	
+	
+	str calledevents = calledevent2alloy(e,addProperties(i,changedProperties(e,i.em)));
+	
+	return event + calledevents;
 }
 
 str precond2alloy(Pre pre,Info i) = intercalate(" \n", [ cond2alloy(cond,addVars(i,oldNow())) | cond <- pre.preconditions ]);

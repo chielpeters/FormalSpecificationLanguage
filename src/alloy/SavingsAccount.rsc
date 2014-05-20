@@ -8,7 +8,6 @@ import alloy::util::Info;
 import alloy::util::StringTemplates;
 import alloy::fact::Traces;
 import alloy::Expressions;
-import alloy::calledevents::Events;
 import alloy::Events;
 import alloy::Invariants;
 import alloy::Functions;
@@ -25,15 +24,12 @@ void savingsaccount2alloy(SavingsAccount sa, bool log){
 	
 	EventMap em = getEventMap(evs);
 	events = [ em[e.name] | e <- sa.evs.events]; 
-	CalledFunctions cf = getCalledFunctions(events,sa);
+	CalledFunctions cf = getCalledFunctions(events,funcs,sa);
 	
 	
 	str body = addMLComment("EVENTS");
-	body += ("" | it + event2alloy(em[ev.name],initInfo(ev.name,exprlist2list(ev.el),em)) + "\n\n"  | ev <- sa.evs.events);
-	
-	body += addMLComment("CALLED EVENTS");
-	body += calledevents2alloy(events,em);
-	
+	body += ("" | it + event2alloy(em[ev.name],initInfo(ev.name,exprlist2list(ev.el),em,{})) + "\n\n"  | ev <- sa.evs.events);
+		
 	body += addMLComment("FUNCTIONS");
 	body += functions2alloy(funcs,cf);
 	
@@ -64,10 +60,20 @@ void writeToAlloy(loc file, SavingsAccountName name, str body){
 	writeFile(file,res);
 }
 
-CalledFunctions getCalledFunctions(list[Event] events, SavingsAccount sa){
+CalledFunctions getCalledFunctions(list[Event] events,Functions funcs,SavingsAccount sa){
 	CalledFunctions cf = {};
 	for(/FunctionName v := events){ cf += v;}
 	for(event <- events){ for(/Var v := event.sig.args){ cf += [FunctionName]"<v>";}}
 	for(ev <- sa.evs.events){ for(/Var v := ev.el){ cf += [FunctionName]"<v>";}}	
+	return cf + calledFunctionsbyFunctions(cf,funcs);
+}
+
+CalledFunctions calledFunctionsbyFunctions(CalledFunctions cf, Functions funcs) =
+ 	( cf | it + calledFunctionsbyFunction(f) | f <- funcs.functions, f.name in cf);
+ 	
+CalledFunctions calledFunctionsbyFunction(Function f){
+	CalledFunctions cf = {};
+	for(/FunctionName n := f.s){cf +=n;}
 	return cf;
 }
+

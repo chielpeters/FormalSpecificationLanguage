@@ -12,13 +12,13 @@ str functions2alloy(Functions functions, CalledFunctions cf) = ("" | it + functi
 //Boolean Functions are predicates
 str function2alloy((Function)`<FunctionName name> [ <Arguments args> ] : Boolean = <Statement s>`){
 	return 	"pred <name>[<functionargs2alloy(args)>] {
-	' <statement2alloy(s,())>
+	'  <statement2alloy(s,())>
 	'}";
 }
 
 str function2alloy(Function f){
 	return 	"fun <f.name>[<functionargs2alloy(f.args)>] : <type2alloy(f.rtype)> {
-	' <statement2alloy(f.s,())>
+	'  <statement2alloy(f.s,())>
 	'}";
 }
 

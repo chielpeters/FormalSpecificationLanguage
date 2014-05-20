@@ -8,15 +8,16 @@ import List;
 
 alias VarMap = map[Var,Expr];
 alias EventMap = map[EventName,Event];
-alias Info = tuple[EventName name, VarMap vm, EventMap em];
+alias Info = tuple[EventName name, VarMap vm, EventMap em,Properties p];
 alias CalledFunctions = set[FunctionName];
+alias Properties = set[Field];
 
-Info initInfo(EventName name, VarMap vm, EventMap em) = <name, vm, em>;
-Info initInfo(EventName name, list[Expr] args, EventMap em) = <name,setVarMap(args,em[name]),em>;
+Info initInfo(EventName name, VarMap vm, EventMap em,Properties p) = <name, vm, em,p>;
+Info initInfo(EventName name, list[Expr] args, EventMap em,Properties p) = <name,setVarMap(args,em[name]),em,p>;
 
-Info addVars(Info i, VarMap vm) = <i.name, i.vm+vm, i.em>;
-
-Info changeEventName(EventName name,Info i) = <name,i.vm,i.em>;
+Info addVars(Info i, VarMap vm) = <i.name, i.vm+vm, i.em,i.p>;
+Info addProperties(Info i, Properties p) = <i.name,i.vm,i.em,i.p+p>;
+Info changeEventName(EventName name,Info i) = <name,i.vm,i.em,i.p>;
 
 EventMap getEventMap(Events events) = (event.sig.name : event | event <- events.events);
 
@@ -34,7 +35,3 @@ VarMap setVarMap(list[Expr] args, Event event){
 	}
 	return vm;
 }
-
-//DEBUG
-Info init(Event e) = <e.sig.name,(),(e.sig.name : e)>;
-

@@ -4,6 +4,7 @@ Events{
   withdraw()
   deposit()
   interest((0 : 2%))
+  close()
 }
 
 Invariants{

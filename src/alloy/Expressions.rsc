@@ -19,9 +19,9 @@ str expr2alloy((Expr) `<Expr lhs> in <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm)
 str expr2alloy((Expr) `<Expr lhs> * <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".mul["  + expr2alloy(rhs,vm) + "]";
 str expr2alloy((Expr) `<Expr lhs> / <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".div[" + expr2alloy(rhs,vm) + "]";
 str expr2alloy((Expr) `<Expr lhs> % <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".rem[" + expr2alloy(rhs,vm) + "]";
-str expr2alloy((Expr) `<Literal date> + <Int i> * <Period p>`,VarMap vm) = literal2alloy(date,vm) + ".plus[" + literal2alloy(i,vm) + "," + literal2alloy(p,vm) + "]";
+str expr2alloy((Expr) `<Expr date> + <Int i> * <Period p>`,VarMap vm) = expr2alloy(date,vm) + ".plus[" + literal2alloy(i,vm) + "," + literal2alloy(p,vm) + "]";
 str expr2alloy((Expr) `<Expr lhs> + <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".plus[" + expr2alloy(rhs,vm) + "]";
-str expr2alloy((Expr) `<Literal date> - <Int i> * <Period p>`,VarMap vm) = literal2alloy(date,vm) + ".sub[" + literal2alloy(i,vm) + "," + literal2alloy(p,vm) + "]";
+str expr2alloy((Expr) `<Expr date> - <Int i> * <Period p>`,VarMap vm) = expr2alloy(date,vm) + ".sub[" + literal2alloy(i,vm) + "," + literal2alloy(p,vm) + "]";
 str expr2alloy((Expr) `<Expr lhs> - <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".sub[" + expr2alloy(rhs,vm) + "]";
 str expr2alloy((Expr) `<Expr lhs> \< <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".lt[ " + expr2alloy(rhs,vm)+ "]";
 str expr2alloy((Expr) `<Expr lhs> \<= <Expr rhs>`,VarMap vm) = expr2alloy(lhs,vm) + ".lte[" + expr2alloy(rhs,vm)+ "]";
