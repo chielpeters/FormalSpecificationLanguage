@@ -20,12 +20,8 @@ str literal2alloy((Literal)`<Frequency f>`,VarMap vm) = "<f>";
 str literal2alloy((Literal)`True`,VarMap vm) = "{}";
 str literal2alloy((Literal)`False`,VarMap vm) = "!{}";
 str literal2alloy((Literal)`<Date d>`,VarMap vm) = "getDate[<d.day>,<month2Int(d.month)>,0]";
+str literal2alloy((Literal)`<Percentage p>`,VarMap vm)= "getPercentage[" + replaceAll("<p>","%","") + "]";
 
-//TODO Change The way Percentage are dealt with
-str literal2alloy(per:(Literal)`<Percentage p>`,VarMap vm){
-	if((Literal)`0.0%` := per) return "getPercentage[0]";
-	return "getPercentage[" + replaceAll(replaceAll(replaceAll("<p>",".",""),"%","")," ","") + "]";
-}
 
 str type2alloy((Type)`Boolean`) = "Bool";
 str type2alloy((Type)`Integer`) = "Int";

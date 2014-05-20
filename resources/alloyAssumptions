@@ -1,2 +1,6 @@
 Cannot create new atoms => Percentage [-100,100] and Date only past dates
 Boolean is not a type => Cannot receive boolean in functions only return
+
+
+
+Unreliable Solution if it keeps getting Integer Overflows!

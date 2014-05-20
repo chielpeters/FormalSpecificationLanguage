@@ -16,7 +16,7 @@ isPayOutDate[Date date, Date payoutdate, Freq freq] : Boolean =
 ##################################################################
 
 #TODO how to read from the map
-rate[map[Integer : Percentage] interestRates, Integer amount] : Percentage = 1.1%;
+rate[map[Integer : Percentage] interestRates, Integer amount] : Percentage = 1%;
 
 interest[Integer maximum, map[Integer : Percentage] interestRates, map[Date : Integer] balance, Date start, Date end] : Integer =
 	sum(min[balance[date]*rate[interestRates,balance[date]],maximum]/daysInYear[date] | date <- {start ... end});
@@ -28,5 +28,5 @@ interest[Integer maximum, map[Integer : Percentage] interestRates, Percentage bo
 # Penalty Functions for Withdrawal and Deposits
 ##################################################################
 
-noPenalty[Integer yearsLeft] : Percentage = 0.0%;
-Penalty[Integer yearsLeft] : Percentage = min[7.1% , 1.1%*yearsLeft];
+noPenalty[Integer yearsLeft] : Percentage = 0%;
+Penalty[Integer yearsLeft] : Percentage = min[7% , 1%*yearsLeft];

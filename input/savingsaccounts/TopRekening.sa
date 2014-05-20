@@ -1,5 +1,11 @@
 SavingsAccount TopRekening
 
-withdraw()
-deposit()
-futureWithdrawal()
+Events{
+  withdraw()
+  deposit()
+  interest((0 : 2%))
+}
+
+Invariants{
+	Positive
+}

@@ -7,7 +7,7 @@ syntax Expr
   = bracket "(" Expr ")"
   > non-assoc (	
     var : Var
-    | functioncall : Var "[" ExprList "]"
+    | functioncall : FunctionName "[" ExprList "]"
     | property: PropertyOfVar
     | oldproperty: "old" PropertyOfVar
     | literal: LiteralPlus
@@ -42,7 +42,7 @@ syntax PropertyOfVar =
     ;
     
 syntax Fields = DotField+ fields;
-syntax DotField = "." Var f;
+syntax DotField = "." Field f;
 syntax ExprList = {Expr ","}* exprs;
 
 syntax LiteralPlus =

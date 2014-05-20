@@ -2,4 +2,4 @@ module alloy::changedproperties::Properties
 
 import grammar::Lexical;
 
-alias Properties = set[Var];
+alias Properties = set[Field];

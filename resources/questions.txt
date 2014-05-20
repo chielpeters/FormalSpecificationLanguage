@@ -2,7 +2,11 @@
 # OPEN
 ########################################################
 
-How to remove #start[]? 
+How to remove #start[] (Generically)? 
+Errors go when registered language?
+Context menu without other options?
+Run a jar in Rascal/execute shell command?
+
 
 ########################################################
 # DONE

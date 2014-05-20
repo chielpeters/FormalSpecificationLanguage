@@ -29,7 +29,7 @@ VarMap setVarMap(list[Expr] args, Event event){
 	for(arg <- event.sig.args){
 		if(i < size(args)){vm += (arg.var : args[i]);} else 
 		if((EventArgument)`<Type t> <Var v> = <Expr exp>` := arg){ vm += (v : exp);}
-		else throw "Event Variable is undefined <arg.var>";
+		else throw "Event Variable is undefined <arg.var> in event <event.sig.name>";
 		i+=1;
 	}
 	return vm;

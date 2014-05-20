@@ -1,6 +1,7 @@
 module alloy::Expressions
 
 import grammar::Expressions;
+import grammar::Lexical;
 import alloy::util::Info;
 import alloy::TypesAndLiterals;
 import String;
@@ -8,7 +9,7 @@ import List;
 
 str expr2alloy((Expr) `(<Expr e>)`,VarMap vm) = "( " + expr2alloy(e,vm) + " )";
 str expr2alloy((Expr)`<Var v>`,VarMap vm) = var2alloy(v,vm);
-str expr2alloy((Expr)`<Var v> [ <ExprList el> ]`,VarMap vm) = var2alloy(v,vm) + "[" + exprlist2alloy(el,vm) + "]";
+str expr2alloy((Expr)`<FunctionName fn> [ <ExprList el> ]`,VarMap vm) = var2alloy([Var]"<fn>",vm) + "[" + exprlist2alloy(el,vm) + "]";
 str expr2alloy((Expr) `<PropertyOfVar pv>`,VarMap vm) = propertyofvar2alloy(pv,vm);
 str expr2alloy((Expr) `old <PropertyOfVar pv>`,VarMap vm) = propertyofvar2alloy(pv,vm+oldNow());
 str expr2alloy((Expr) `<LiteralPlus l>`,VarMap vm) = literalplus2alloy(l,vm);

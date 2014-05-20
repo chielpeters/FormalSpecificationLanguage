@@ -11,4 +11,4 @@ Properties changedProperties(Expr e) = {};
 Properties first(Fields fields) = {[ f.f | DotField f <- fields.fields][0]}; 
 
 //DEBUG
-str printset(set[Var] v) = ("" | it + " " + "<f>" | f<-v);
+str printset(set[Field] v) = ("" | it + " " + "<f>" | f<-v);

@@ -1,7 +1,11 @@
-module registerIDE
+module ide::RegisterIDE
 
 import parse;
+import List;
 import util::IDE;
+import ParseTree;
+import Message;
+import check::check;
 import alloy::SavingsAccount;
 import grammar::SavingsAccount;
 
@@ -9,6 +13,7 @@ void registerAll(){
 	registerSavingsAccount();
 	registerEvents();
 	registerFunctions();
+	registerInvariants();
 }
 
 /**************************************************
@@ -19,6 +24,7 @@ str SAVINGSACCOUNT_LANGUAGE = "SavingsAccount";
 
 void registerSavingsAccount(){
 	registerLanguage(SAVINGSACCOUNT_LANGUAGE,SAVINGSACCOUNT_EXTENSION,parseSavingsAccount);
+	registerAnnotator(SAVINGSACCOUNT_LANGUAGE, checkAndAnnotate);
 	contribs = {
 	popup(
 		menu(SAVINGSACCOUNT_LANGUAGE,[
@@ -30,14 +36,18 @@ void registerSavingsAccount(){
 	registerContributions(SAVINGSACCOUNT_LANGUAGE, contribs);
 }
 
+SavingsAccount checkAndAnnotate(SavingsAccount sa){
+	return sa[@messages = toSet(check(sa))];
+}
+
 void generateAlloy(SavingsAccount sa, loc l){
 	savingsaccount2alloy(sa,false);
 }
 
 void startAlloy(SavingsAccount sa, loc l){
 	generateAlloy(sa,l);
-	str location = "C:/Users/Chiel/Dropbox/Thesis/Alloy";
-	location += "/<sa.sig.nam>.als";
+	str location = "C:/Users/Chiel/Dropbox/public";
+	location += "/<sa.name>.als";
 	startAlloy(location);
 	
 }
@@ -58,7 +68,7 @@ void registerEvents(){
 /**************************************************
 * EVENTS
 **************************************************/
-str FUNCTIONS_EXTENSION = "fs";
+str FUNCTIONS_EXTENSION = "fns";
 str FUNCTIONS_LANGUAGE = "Functions";
 
 void registerFunctions(){
@@ -69,9 +79,9 @@ void registerFunctions(){
 * INVARIANTS
 **************************************************/
 
-str INVARIANTS_EXTENSION = "inv";
-str INVARIANTS_LANGUAGE = "Functions";
+str INVARIANTS_EXTENSION = "invs";
+str INVARIANTS_LANGUAGE = "Invariants";
 
-void registerFunctions(){
+void registerInvariants(){
 	registerLanguage(INVARIANTS_LANGUAGE,INVARIANTS_EXTENSION,parseInvariants);
 }

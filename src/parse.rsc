@@ -6,27 +6,38 @@ import vis::Render;
 import grammar::SavingsAccount;
 import grammar::Events;
 import grammar::Functions;
+import grammar::Invariants;
 import ParseTree;
 
 public void viewTree(Tree tree) = render(space(visParsetree(tree),std(gap(8,30)),std(resizable(true))));
 
 SavingsAccount parseSavingsAccount(loc file) = parse(#SavingsAccount,file);
 SavingsAccount parseSavingsAccount(str x, loc file) = parse(#SavingsAccount,x,file);
+SavingsAccount parseSavingsAccount() = parse(#SavingsAccount,|file:///C:/Users/Chiel/Dropbox/Thesis/SavingsAccount/input/savingsaccounts/TopRekening.sa|);
 
-Events parseEvents(loc file){
-	if(/Events e := parse(#start[Events],file)) return e;
-	throw "Parse Error parseEvents file:<file>";
-}
-Events parseEvents(str x, loc file){
-	if(/Events e := parse(#start[Events],x,file)) return e;
-	throw "Parse Error parseEvents x: <x>, file: <file>";
+start[Events] parseEvents(loc file) = parse(#start[Events],file);
+start[Events] parseEvents(str x, loc file) = parse(#start[Events],x,file);
+
+start[Functions] parseFunctions(loc file) = parse(#start[Functions],file);
+start[Functions] parseFunctions(str x, loc file) = parse(#start[Functions],x,file);
+
+start[Invariants] parseInvariants(loc file) = parse(#start[Invariants],file);
+start[Invariants] parseInvariants(str x,loc file) = parse(#start[Invariants],x,file);
+
+
+Events unpackAndParseEvents(){
+	loc file = |file:///C:/Users/Chiel/Dropbox/Thesis/SavingsAccount/input/events/events.evs|;
+	return parse(#start[Events],file).args[1];
 }
 
-Functions parseFunctions(loc file){
-	if(/Functions f := parse(#start[Functions],file)) return f;
-	throw "Parse Error parseFunctions file <file>";
+Functions unpackAndParseFunctions(){
+	loc file = |file:///C:/Users/Chiel/Dropbox/Thesis/SavingsAccount/input/functions/functions.fns|;
+	return parse(#start[Functions],file).args[1];
 }
-Functions parseFunctions(str x, loc file){
-	if(/Functions f := parse(#start[Functions],x,file)) return f;
-	throw "Parse Error parseFunctions,x : <x> file: <file>";
+
+Invariants unpackAndParseInvariants(){
+	loc file = |file:///C:/Users/Chiel/Dropbox/Thesis/SavingsAccount/input/invariants/invariants.invs|;
+	return parse(#start[Invariants],file).args[1];
 }
+
+

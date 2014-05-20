@@ -17,7 +17,7 @@ str notchangedproperties2alloy(Event e, EventMap em,str old,str new){
 }
 
 Properties notChangedProperties(Event e, EventMap em){
-	Properties saProperties = { [Var]"balance" , [Var]"term" , [Var]"startDate" ,[Var]"payoutfreq"};
+	Properties saProperties = { [Field]"balance" , [Field]"term" , [Field]"startDate" ,[Field]"payoutfreq"};
 	return saProperties - changedProperties(e,em);
 }
 
