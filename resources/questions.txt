@@ -6,6 +6,7 @@ How to remove #start[] (Generically)?
 Errors go when registered language?
 Context menu without other options?
 Run a jar in Rascal/execute shell command?
+get root of the project in java, rascal seems to intervene common methods?
 
 
 ########################################################

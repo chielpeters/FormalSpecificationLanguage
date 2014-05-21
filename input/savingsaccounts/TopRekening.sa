@@ -1,6 +1,7 @@
 SavingsAccount TopRekening
 
 Events{
+  open()
   withdraw()
   deposit()
   interest((0 : 2%))

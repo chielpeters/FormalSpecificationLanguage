@@ -37,10 +37,14 @@ void generateAlloy(SavingsAccount sa, loc l){
 
 void generateAndStartAlloy(SavingsAccount sa, loc l){
 	generateAlloy(sa,l);
+	loc alloyLoc = |project://SavingsAccount/resources/Alloy4.2_2014-05-16.jar|;
 	loc location = |project://SavingsAccount/output/| + "<sa.name>.als";
-	startAlloy(location);
+	startAlloy(alloyLoc,location);
 	
 }
 
 @javaClass{lang.savingsaccounts.alloy.com.sa.Alloy}
-public java void startAlloy(loc l);
+public java void startAlloy(loc jarLoc,loc l);
+
+@javaClass{lang.savingsaccounts.alloy.com.sa.Alloy}
+public java str getString(loc l);

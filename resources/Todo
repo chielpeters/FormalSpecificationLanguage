@@ -1,2 +1,4 @@
 Called Events twice, generates two same predicates
-Event with _ creates problems?
+Event with _ creates problems
+
+keywords alloy cannot be event/names and such
