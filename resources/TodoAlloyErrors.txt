@@ -1,0 +1,2 @@
+keywords alloy cannot be event/names and such
+Variable names cannot equal event params
