@@ -1,7 +1,7 @@
 module lang::events::alloy::Events
 
 import lang::events::\syntax::Events;
-import lang::events::alloy::properties::Properties;
+import lang::events::alloy::properties::Fields;
 import lang::specifications::\syntax::Fields;
 import lang::specifications::alloy::utils::Info;
 import lang::specifications::alloy::utils::StringTemplates;
@@ -14,7 +14,7 @@ str event2alloy(Event e,FieldDecls fs, Info i){
 	str event = "pred <i.specname>.<e.sig.name> [ old : <i.specname> <(/Parameters p := e.param) ? ","+functionargs2alloy(p.args):"">]{
 	'  <(/Pre pre := e.pre) ? addComment("PRECONDITIONS")+precond2alloy(pre,i):"">
 	'  <(/Post post := e.post) ? addComment("POSTCONDITIONS")+postcond2alloy(post,i):"">
-	'  <notchangedproperties2alloy(e,fs,"old","this")>
+	'  <notchangedfields2alloy(e,fs,"old","this")>
 	'}\n\n";
 	
 	return event;
