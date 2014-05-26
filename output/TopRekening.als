@@ -8,7 +8,11 @@ open types/frequency
 open types/percentage
 
 sig TopRekening {
-  amount : one Int,
+  balance : Date -> lone Int,
+  term : one Int,
+  startDate : one Date,
+  interestFreq : one Frequency,
+  now : one Date,
   opened : one Int 
 }
 
@@ -18,13 +22,16 @@ sig TopRekening {
 
 pred TopRekening.openAccount [ old : TopRekening ,inleg : Int]{
   // PRECONDITIONS 
-  inleg.gte[100]
+  inleg.gte[0]
   // POSTCONDITIONS 
   this.balance = {this.now->inleg}
   // PROPERTY CONDITIONS 
   this.opened = 1 
   old.opened = 0
-  this.amount = old.amount
+  this.term = old.term
+  this.startDate = old.startDate
+  this.interestFreq = old.interestFreq
+  this.now = old.now
 }
 
 
@@ -38,7 +45,10 @@ pred TopRekening.withdraw [ old : TopRekening ,amount : Int]{
   // PROPERTY CONDITIONS 
   old.opened = 1 
   this.opened = old.opened
-  this.amount = old.amount
+  this.term = old.term
+  this.startDate = old.startDate
+  this.interestFreq = old.interestFreq
+  this.now = old.now
 }
 
 
@@ -51,7 +61,10 @@ pred TopRekening.deposit [ old : TopRekening ,amount : Int]{
   // PROPERTY CONDITIONS 
   old.opened = 1 
   this.opened = old.opened
-  this.amount = old.amount
+  this.term = old.term
+  this.startDate = old.startDate
+  this.interestFreq = old.interestFreq
+  this.now = old.now
 }
 
 
@@ -63,7 +76,11 @@ pred TopRekening.close [ old : TopRekening ]{
   // PROPERTY CONDITIONS 
   old.opened = 1 
   this.opened = 0
-  this.amount = old.amount
+  this.term = old.term
+  this.balance = old.balance
+  this.startDate = old.startDate
+  this.interestFreq = old.interestFreq
+  this.now = old.now
 }
 
 

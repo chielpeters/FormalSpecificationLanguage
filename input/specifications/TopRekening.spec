@@ -1,11 +1,15 @@
 Specification TopRekening
 
 Fields{
-	amount : Integer
+	balance 		: Date -> Integer
+	term 			: Integer
+	startDate		: Date
+	interestFreq 	: Freq
+	now 			: Date
 }
 
 Events{
-  openAccount(100)
+  openAccount()
   withdraw()
   deposit()
   close()

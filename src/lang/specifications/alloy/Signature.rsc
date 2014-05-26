@@ -1,6 +1,7 @@
 module lang::specifications::alloy::Signature
 
 import lang::specifications::\syntax::TypesAndLiterals;
+import lang::specifications::alloy::TypesAndLiterals;
 import lang::specifications::\syntax::Fields;
 import lang::specifications::\syntax::Lexical;
 import List;
@@ -13,13 +14,15 @@ return "sig <name> {
   '}\n\n";
 }
 
-str field2alloy(FieldDecl field) = "<field.name> : <type2alloy(field.t)>";
+str field2alloy(FieldDecl field) = "<field.name> : <fieldtype2alloy(field.t)>";
 
-str type2alloy((Type)`Integer`) = "one Int";
-str type2alloy((Type)`Date`) = "one Date";
-str type2alloy((Type)`Period`) = "one Period";
-str type2alloy((Type)`Percentage`) = "one Percentage";
-str type2alloy((Type)`map[<Type key> : <Type val>]`) = "<type2alloy(key)> -\> lone <type2alloy(val)>";
-str type2alloy((Type)`list[ <Type t>]`) = "seq <type2alloy(t)>";
-str type2alloy((Type)`set[ <Type t>]`) = "set <type2alloy(t)>";
-str type2alloy((Type)`Freq`) = "one Frequency";
+str fieldtype2alloy(t:(Type)`Integer`) = "one " + type2alloy(t);
+str fieldtype2alloy(t:(Type)`Date`) = "one " + type2alloy(t);
+str fieldtype2alloy(t:(Type)`Period`) = "one " + type2alloy(t);
+str fieldtype2alloy(t:(Type)`Percentage`) = "one " + type2alloy(t);
+str fieldtype2alloy(t:(Type)`<Type t1> -\> <Type t2>`) = "<type2alloy(t1)> -\> lone <type2alloy(t2)>"; 
+str fieldtype2alloy(t:(Type)`map[<Type key> : <Type val>]`) = "<type2alloy(key)> -\> lone <type2alloy(val)>";
+str fieldtype2alloy(t:(Type)`list[ <Type t>]`) = "seq <type2alloy(t)>";
+str fieldtype2alloy(t:(Type)`set[ <Type t>]`) = "set <type2alloy(t)>";
+str fieldtype2alloy(t:(Type)`Freq`) = "one " + type2alloy(t);
+str fieldtype2alloy(Type t){throw "uncaught fieldtype <t>";}

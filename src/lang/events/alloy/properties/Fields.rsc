@@ -9,7 +9,7 @@ import lang::events::\syntax::Events;
 import List;
 
 str notchangedfields2alloy(Event e,FieldDecls decls,str old,str new){
-	DeclaredFields df = toSet(decls) - changedDeclaredFields(e);
+	DeclaredFields df = toSet(decls) - changedFields(e);
 	str res = addComment("PROPERTY CONDITIONS") ;
 	res += printLifeCycleFieldCondition(e,old,new);
 	return res + intercalate("\n",[ "<new>.<p> = <old>.<p>" | p <-df]);

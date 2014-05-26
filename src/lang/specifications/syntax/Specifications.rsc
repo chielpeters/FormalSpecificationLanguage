@@ -8,10 +8,10 @@ extend lang::invariants::\syntax::Invariants;
 
 start syntax Specification = "Specification" SpecificationName name Fields fields EventInstances evs InvariantInstances? invs;
 
-syntax Fields = "Fields" "{" FieldDecls fields "}";
+syntax Fields =  @Foldable "Fields" "{" FieldDecls fields "}";
 
-syntax EventInstances = "Events" "{" EventInstance* events "}";
+syntax EventInstances =  @Foldable "Events" "{" EventInstance* events "}";
 syntax EventInstance = EventName name "(" ExprList el ")";
 
-syntax InvariantInstances = "Invariants" "{" InvariantInstance* invariants "}";
+syntax InvariantInstances =  @Foldable "Invariants" "{" InvariantInstance* invariants "}";
 syntax InvariantInstance = InvariantName name;
