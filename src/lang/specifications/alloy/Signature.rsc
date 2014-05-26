@@ -7,9 +7,10 @@ import List;
 
 
 str signature2alloy(SpecificationName name, FieldDecls decls){
+list[FieldDecl] fdecls = [ f | f <- decls.decls] + [FieldDecl]"opened : Integer";
 return "sig <name> {
-  '  <intercalate("\n",[field2alloy(f) | f <- decls.decls])> 
-  '}";
+  '  <intercalate(",\n",[field2alloy(f) | f <- fdecls])> 
+  '}\n\n";
 }
 
 str field2alloy(FieldDecl field) = "<field.name> : <type2alloy(field.t)>";

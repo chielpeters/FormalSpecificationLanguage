@@ -10,10 +10,10 @@ lexical Id = ([a-z A-Z 0-9 _] !<< [a-z A-Z][a-z A-Z 0-9 _]* !>> [a-z A-Z 0-9 _])
 
 keyword Keywords = "Jan" | "Feb" | "Mar" | "Apr" | "May" | "Jun" | "Jul" | "Aug" | "Sep" | "Oct" | "Nov" | "Dec" | 
 					"Daily" | "Monthly" | "Quarterly" | "Yearly" | "Day" | "Month" | "Quarter" | "Year" | "True" | "False" | 
-					"old" | "sum" | "case" | "Inf" | "in" | "parameters" | "preconditions" | "postconditions" | 
-					"all" | "no" | "some" | "lone" | "one";
+					 "sum" | "case" | "Inf" | "in" | "parameters" | "preconditions" | "postconditions" | 
+					"all" | "no" | "some" | "lone" | "one" | "inital" | "final";
 
-layout Standard = WhitespaceOrComment* !>> [\t-\n\r\ ];
+layout Standard = WhitespaceOrComment* !>> [#\t-\n\r\ ];
 lexical Comment = @category="Comment" "#" ![\n]* $;
 
 lexical WhitespaceOrComment 

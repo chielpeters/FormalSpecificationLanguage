@@ -33,19 +33,19 @@ void specification2alloy(Specification spec, bool log){
 	Invariants invariants = unpackAndParseInvariants();
 	
 	EventMap em = getEventMap(evs);
-	events = [ em[e.name] | e <- spec.evs.events]; 
-	CalledFunctions cf = getCalledFunctions(events,funcs,spec);
+	list[Event] calledevents = [ em[e.name] | e <- spec.evs.events]; 
+	CalledFunctions cf = getCalledFunctions(calledevents,funcs,spec);
 	
-	str body = getModuleName(spec.name) + getImports() + signature2alloy(spec.name,spec.fields.fields);
+	str body = getModuleName(spec.name) + getImports(spec.name) + signature2alloy(spec.name,spec.fields.fields);
 	
 	body += addMLComment("EVENTS");
-	body += ("" | it + event2alloy(em[ev.name],initInfo(spec.name,ev.name,exprlist2list(ev.el),em,{})) + "\n\n"  | ev <- spec.evs.events);
+	body += ("" | it + event2alloy(em[ev.name],spec.fields.fields,initInfo(spec.name,exprlist2list(ev.el),ev.name,em)) + "\n\n"  | ev <- spec.evs.events);
 		
 	body += addMLComment("FUNCTIONS");
 	body += functions2alloy(funcs,cf);
 	
 	body += addMLComment("FACT");
-	body += fact2alloy(events);
+	body += fact2alloy(calledevents,spec.name);
 	
 	if(/InvariantInstances invs := spec){
 		body += addMLComment("INVARIANTS");
@@ -53,9 +53,9 @@ void specification2alloy(Specification spec, bool log){
 	}
 	
 	body += addMLComment("COMMANDS");
-	body += predShow();
+	body += predShow(spec.name);
 	if(/InvariantInstances invs := spec){
-		body += (""|it + invariant2alloycommand(inv) + "\n" | inv <- invs.invariants);
+		body += (""|it + invariant2alloycommand(inv,spec.name) + "\n" | inv <- invs.invariants);
 	}
 	
 	loc output = getOutputAlloyFileLocation(spec.name);

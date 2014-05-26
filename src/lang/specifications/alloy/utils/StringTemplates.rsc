@@ -2,11 +2,11 @@ module lang::specifications::alloy::utils::StringTemplates
 
 import lang::specifications::\syntax::Specifications;
 
-str getModuleName(Specification sn) = "module <sn>\n";
+str getModuleName(SpecificationName name) = "module <name>\n";
 
-str getImports(){
+str getImports(SpecificationName name){
 return "
-	'open util/ordering[SavingsAccount]
+	'open util/ordering[<name>]
 	'open util/integer
 	'open types/date
 	'open types/period
@@ -15,9 +15,8 @@ return "
 \n";
 }
 
-str predShow() = "pred show{} \nrun show <getCommandScope()>\n";
-//TODO Set Scope self, Percentage over all Ints (2^7)
-str getCommandScope() = "for 5 SavingsAccount, exactly 5 Date, 7 Int, exactly 128 Percentage";
+str predShow(SpecificationName name) = "pred show{} \nrun show <getCommandScope(name)>\n";
+str getCommandScope(SpecificationName name) = "for 5 <name>, exactly 5 Date, 7 Int, exactly 128 Percentage";
 str balancePropertyCondition(str old, str new) = "<old>.balance in <new>.balance";
 
 str addComment(str com) = "// <com> \n";

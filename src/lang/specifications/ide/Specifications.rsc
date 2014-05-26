@@ -36,9 +36,9 @@ void generateAlloy(Specification spec, loc l){
 }
 
 void generateAndStartAlloy(Specification spec, loc l){
-	generateAlloy(sa,l);
+	generateAlloy(spec,l);
 	loc alloyLoc = |project://FormalSpecificationLanguage/resources/Alloy4.2_2014-05-16.jar|;
-	loc location = |project://FormalSpecificationLanguage/output/| + "<sa.name>.als";
+	loc location = |project://FormalSpecificationLanguage/output/| + "<spec.name>.als";
 	startAlloy(alloyLoc,location);
 	
 }

@@ -1,5 +1,6 @@
 module lang::specifications::alloy::utils::Info
 
+import lang::specifications::\syntax::Lexical;
 import lang::specifications::\syntax::TypesAndLiterals;
 import lang::specifications::\syntax::Expressions;
 import lang::events::\syntax::Events;
@@ -8,15 +9,12 @@ import List;
 
 alias VarMap = map[Var,Expr];
 alias EventMap = map[EventName,Event];
-alias Properties = set[Field];
-alias Info = tuple[SpecificationName specname,EventName name, VarMap vm, EventMap em,Properties p];
+alias Info = tuple[SpecificationName specname, VarMap vm, EventMap em];
 
-Info initInfo(SpecificationName specname,EventName name, VarMap vm, EventMap em,Properties p) = <specname,name, vm, em,p>;
-Info initInfo(SpecificationName specname,EventName name, list[Expr] args, EventMap em,Properties p) = <specname,name,setVarMap(args,em[name]),em,p>;
+Info initInfo(SpecificationName specname, VarMap vm, EventMap em) = <specname, vm, em>;
+Info initInfo(SpecificationName specname, list[Expr] args,EventName name, EventMap em) = <specname,setVarMap(args,em[name]),em>;
 
-Info addVars(Info i, VarMap vm) = <i.specname,i.name, i.vm+vm, i.em,i.p>;
-Info addProperties(Info i, Properties p) = <i.specname,i.name,i.vm,i.em,i.p+p>;
-Info changeEventName(EventName name,Info i) = <i.specname,name,i.vm,i.em,i.p>;
+Info addVars(Info i, VarMap vm) = <i.specname, i.vm+vm, i.em>;
 
 EventMap getEventMap(Events events) = (event.sig.name : event | event <- events.events);
 

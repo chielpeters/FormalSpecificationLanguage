@@ -29,6 +29,6 @@ public class Alloy {
 	}
 	
 	public static String getRoot(){
-		return "C:/Users/Chiel/Dropbox/Thesis/SavingsAccount";
+		return "C:/Users/Chiel/Dropbox/Thesis/FormalSpecificationLanguage";
 	}
 }

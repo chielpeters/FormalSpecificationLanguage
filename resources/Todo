@@ -1,11 +1,8 @@
-Kill Events Calling Other events => put in preconditions
-
 Make an import part 
-
-Change code generation from dependencies on SavingsAccounts
-
-LifeCycle Event Initial/Final
 
 Think of a simple example with two classes
 Generate Trace Paths Alloy
 Search for SMT Solver for math problems
+
+
+Optional FieldDecl

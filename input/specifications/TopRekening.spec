@@ -5,7 +5,7 @@ Fields{
 }
 
 Events{
-  openAccount(1000)
+  openAccount(100)
   withdraw()
   deposit()
   close()

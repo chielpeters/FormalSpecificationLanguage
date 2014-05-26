@@ -1,5 +1,3 @@
-# BEHAVIOUR ON NAMINGCONVENTIONS (AUTO)?
-
 ##################################################################
 # Withdrawal and Deposit
 ##################################################################
@@ -9,74 +7,36 @@ parameters		: Integer amount
 preconditions	: this.balance[now] >= amount, amount >= 0
 postconditions	: this.balance[now] == old this.balance[now] - amount
 
-futureWithdrawal(Integer -> Integer penalty = noPenalty)
-parameters		: Integer amount, Date date
-preconditions	: this.balance[date] > amount, amount > 0, date >= now
-postconditions	: this.balance[date] == old this.balance[date] - amount
-
-periodicWithdrawal()
-parameters		: Integer amount, Date date, Period period, Integer times
-preconditions	: amount > 0, date > now, times > 0
-postconditions	: ( futureWithdrawal()[amount,date+period*i]| i <- {0...(times-1)})
-
 deposit(Integer -> Integer penalty = noPenalty)
 parameters		: Integer amount
 preconditions	: amount > 0
 postconditions	: this.balance[now] == old this.balance[now] + amount
 
-futureDeposit(Integer -> Integer penalty = noPenalty)
-parameters		: Integer amount, Date date
-preconditions	: amount > 0, date > now
-postconditions	: this.balance[date] == old this.balance[date] + amount*(1-penalty[amount])
-
-periodicDeposit()
-parameters		: Integer amount, Date date, Period period, Integer times
-preconditions	: amount > 0, date > now, times > 0
-postconditions	: (futureWithdrawal()[amount,date+i*period]| i <- {0...(times-1)})
-
-cancelStandingOrder()
-parameters		: Date date
-preconditions	: date > now
-postconditions	: this.balance[date] == old this.balance[date] 
-
-cancelPeriodicOrder()
-parameters		: Date date, Period period, Integer times
-preconditions	: date > now
-postconditions	: (cancelStandingOrder()[date+i*period]| i <- {0 ... (times-1)})
-
-
 ##################################################################
 # Open and Close
 ##################################################################
 
-#TODO Interest
-close()
-postconditions	: withdraw()[this.balance[now]]
+final close()
+preconditions 	: this.balance[this.now] == 0
 
-closeWithoutIntermediateInterest()
-postconditions	: withdraw()[this.balance[now]]
-
-openFixed(set[Freq] payoutFreq = {Yearly}, set[Integer] terms = {Inf})
+initial openFixed(set[Freq] payoutFreq = {Yearly}, set[Integer] terms = {Inf})
 parameters		: Freq freq , Integer t
 preconditions	: freq in payoutFreq, t in terms
 postconditions	: this.balance == (now : 0), this.payoutfreq == freq, this.term == t, this.startDate == now
 
-openAccount(Integer minimumInleg = 0)
+initial openAccount(Integer minimumInleg = 0)
 parameters		: Integer inleg
 preconditions	: inleg >= minimumInleg
 postconditions 	: this.balance == (now : inleg)
 
-cancelOpen()
-preconditions	: this.startDate > now-14*Day
-postconditions	: withdraw()[this.balance[now]]
+final cancelOpen()
+preconditions	: this.startDate > now-14*Day && this.balance[this.now] == 0
 
-forcedClose(Integer minimum)
+final forcedClose(Integer minimum)
 preconditions	: this.balance[now] < minimum
-postconditions	: close()[]
 
-closeAfterDuration()
+final closeAfterDuration()
 preconditions	: now > this.startDate + this.term*Year
-postconditions	: close()[]
 
 
 ##################################################################
@@ -85,9 +45,9 @@ postconditions	: close()[]
 
 interest(map[Integer : Percentage] interestRates, Freq freq = Yearly, Date payoutdate = 1 Dec, Integer maximum = 100)
 preconditions	: isPayOutDate[now,payoutdate,freq]
-postconditions	: deposit()[interest[maximum,interestRates,this.balance,now-freq,now]]
+postconditions	: this.balance[now] == old this.balance[now] + interest[maximum,interestRates,this.balance,now-freq,now]
 
 
 interestBonus(map[Integer : Percentage] interestRates,Percentage bonusRate, Date payoutdate = 1 Dec, Integer maximum = 100)
 preconditions	: isPayOutDate[now,payoutdate,Yearly]
-postconditions	: deposit()[InterestBonus[maximum,interestRates, bonusRate,this.balance,now-Year,now]]
+postconditions	: this.balance[now] == old this.balance[now] + InterestBonus[maximum,interestRates, bonusRate,this.balance,now-Year,now]

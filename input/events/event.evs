@@ -1,0 +1,4 @@
+withdraw(Integer -> Integer penalty = noPenalty) 
+parameters		: Integer amount
+preconditions	: this.balance[now] >= amount, amount >= 0
+postconditions	: this.balance[now] == old this.balance[now] - amount

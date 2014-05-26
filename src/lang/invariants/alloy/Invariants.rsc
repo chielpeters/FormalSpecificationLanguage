@@ -1,5 +1,6 @@
 module lang::invariants::alloy::Invariants
 
+import lang::specifications::\syntax::Lexical;
 import lang::invariants::\syntax::Invariants;
 import lang::specifications::\syntax::Specifications;
 import lang::specifications::alloy::utils::StringTemplates;
@@ -19,6 +20,6 @@ str invariant2alloy(Invariant inv){
 	'}";
 }
 
-str invariant2alloycommand(InvariantInstance inv) = "check <inv.name> <getCommandScope()>";
+str invariant2alloycommand(InvariantInstance inv,SpecificationName name) = "check <inv.name> <getCommandScope(name)>";
 
 InvariantMap getInvariantMap(Invariants invs) = ( () | it + (inv.name : inv) | inv <- invs.invariants);

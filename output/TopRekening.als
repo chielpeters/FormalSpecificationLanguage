@@ -1,97 +1,70 @@
 module TopRekening
 
-open util/ordering[SavingsAccount]
+open util/ordering[TopRekening]
 open util/integer
 open types/date
 open types/period
 open types/frequency
 open types/percentage
 
-sig SavingsAccount {
-  balance : Date -> lone Int,
-  term  : one Int,
-  startDate : one Date,
-  payoutfreq: one Frequency,
-  opened : lone Int,
-  now : one Date
-}{
-  opened in {0+1}
+sig TopRekening {
+  amount : one Int,
+  opened : one Int 
 }
 
 /********************
 * EVENTS
 ********************/
 
-pred SavingsAccount.openAccount [ s : SavingsAccount ,inleg : Int]{
+pred TopRekening.openAccount [ old : TopRekening ,inleg : Int]{
   // PRECONDITIONS 
-  inleg.gte[0]
+  inleg.gte[100]
   // POSTCONDITIONS 
   this.balance = {this.now->inleg}
   // PROPERTY CONDITIONS 
   this.opened = 1 
-  s.opened = 0
-  this.term = s.term
-  this.startDate = s.startDate
-  this.payoutfreq = s.payoutfreq
+  old.opened = 0
+  this.amount = old.amount
 }
 
 
 
-pred SavingsAccount.withdraw [ s : SavingsAccount ,amount : Int]{
+pred TopRekening.withdraw [ old : TopRekening ,amount : Int]{
   // PRECONDITIONS 
-  s.balance[s.now].gte[amount] 
+  old.balance[old.now].gte[amount] 
   amount.gte[0]
   // POSTCONDITIONS 
-  this.balance[this.now] = s.balance[s.now].sub[amount]
+  this.balance[this.now] = old.balance[old.now].sub[amount]
   // PROPERTY CONDITIONS 
-  s.opened = 1 
-  this.opened = s.opened
-  this.term = s.term
-  this.startDate = s.startDate
-  this.payoutfreq = s.payoutfreq
+  old.opened = 1 
+  this.opened = old.opened
+  this.amount = old.amount
 }
 
 
 
-pred SavingsAccount.deposit [ s : SavingsAccount ,amount : Int]{
+pred TopRekening.deposit [ old : TopRekening ,amount : Int]{
   // PRECONDITIONS 
   amount.gt[0]
   // POSTCONDITIONS 
-  this.balance[this.now] = s.balance[s.now].plus[amount]
+  this.balance[this.now] = old.balance[old.now].plus[amount]
   // PROPERTY CONDITIONS 
-  s.opened = 1 
-  this.opened = s.opened
-  this.term = s.term
-  this.startDate = s.startDate
-  this.payoutfreq = s.payoutfreq
+  old.opened = 1 
+  this.opened = old.opened
+  this.amount = old.amount
 }
 
 
 
-pred SavingsAccount.close [ s : SavingsAccount ]{
-  
-  // POSTCONDITIONS 
-  close_withdraw[this,s,this.balance[this.now]]
-  // PROPERTY CONDITIONS 
-  s.opened = 1 
-  this.opened = 0
-  this.term = s.term
-  this.startDate = s.startDate
-  this.payoutfreq = s.payoutfreq
-}
-
-pred SavingsAccount.close_withdraw [ s : SavingsAccount ,amount : Int]{
+pred TopRekening.close [ old : TopRekening ]{
   // PRECONDITIONS 
-  s.balance[s.now].gte[amount] 
-  amount.gte[0]
-  // POSTCONDITIONS 
-  this.balance[this.now] = s.balance[s.now].sub[amount]
+  old.balance[old.now] = 0
+  
   // PROPERTY CONDITIONS 
-  this.term = s.term
-  this.startDate = s.startDate
-  this.payoutfreq = s.payoutfreq
+  old.opened = 1 
+  this.opened = 0
+  this.amount = old.amount
 }
-
 
 
 
@@ -108,9 +81,7 @@ fun noPenalty[yearsLeft : Int] : Percentage {
 ********************/
 
 fact traces {
-  all old: SavingsAccount - last | let new = next[old]{
-    advance[old.now,new.now]
-    old.balance in new.balance && #new.balance = add[#old.balance,1]
+  all old: TopRekening - last | let new = next[old]{
     first.opened = 0
     some i : Int |  openAccount[new, old, i] or withdraw[new, old, i] or deposit[new, old, i] or close[new, old]
   }
@@ -120,12 +91,12 @@ fact traces {
 ********************/
 
 assert Positive {
-  all s: SavingsAccount  | all d : Date | s.balance[d] >= 0
+  all s: TopRekening  | all d : Date | s.balance[d] >= 0
 }
 /********************
 * COMMANDS
 ********************/
 
 pred show{} 
-run show for 5 SavingsAccount, exactly 5 Date, 7 Int, exactly 128 Percentage
-check Positive for 5 SavingsAccount, exactly 5 Date, 7 Int, exactly 128 Percentage
+run show for 5 TopRekening, exactly 5 Date, 7 Int, exactly 128 Percentage
+check Positive for 5 TopRekening, exactly 5 Date, 7 Int, exactly 128 Percentage
