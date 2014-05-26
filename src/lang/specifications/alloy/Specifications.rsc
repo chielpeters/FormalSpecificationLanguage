@@ -6,6 +6,7 @@ import lang::specifications::alloy::utils::StringTemplates;
 import lang::specifications::alloy::utils::CalledFunctions;
 import lang::specifications::alloy::fact::Traces;
 import lang::specifications::alloy::Expressions;
+import lang::specifications::alloy::Signature;
 import lang::specifications::\syntax::Specifications;
 
 import lang::events::alloy::Events;
@@ -35,10 +36,10 @@ void specification2alloy(Specification spec, bool log){
 	events = [ em[e.name] | e <- spec.evs.events]; 
 	CalledFunctions cf = getCalledFunctions(events,funcs,spec);
 	
-	str body = getModuleName(spec.name) + getImports() + getSignature();
+	str body = getModuleName(spec.name) + getImports() + signature2alloy(spec.name,spec.fields.fields);
 	
 	body += addMLComment("EVENTS");
-	body += ("" | it + event2alloy(em[ev.name],initInfo(ev.name,exprlist2list(ev.el),em,{})) + "\n\n"  | ev <- spec.evs.events);
+	body += ("" | it + event2alloy(em[ev.name],initInfo(spec.name,ev.name,exprlist2list(ev.el),em,{})) + "\n\n"  | ev <- spec.evs.events);
 		
 	body += addMLComment("FUNCTIONS");
 	body += functions2alloy(funcs,cf);
@@ -64,7 +65,7 @@ void specification2alloy(Specification spec, bool log){
 }
 
 
-loc getOutputAlloyFileLocation(Specification name) = |project://FormalSpecificationLanguage/output/| + "<name>.als";
+loc getOutputAlloyFileLocation(SpecificationName name) = |project://FormalSpecificationLanguage/output/| + "<name>.als";
 
 
 

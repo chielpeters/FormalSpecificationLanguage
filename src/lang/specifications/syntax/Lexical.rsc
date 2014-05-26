@@ -1,7 +1,7 @@
 module lang::specifications::\syntax::Lexical
 
 lexical FunctionName = @category="Identifier" Id;
-lexical ClassName = @category="Identifier" Id;
+lexical SpecificationName = @category="Identifier" Id;
 lexical EventName = @category="Identifier" Id;
 lexical Var = @category="Normal" Id;
 lexical InvariantName = @category="Identifier" Id;

@@ -7,6 +7,6 @@ start[Invariants] parseInvariants(loc file) = parse(#start[Invariants],file);
 start[Invariants] parseInvariants(str x,loc file) = parse(#start[Invariants],x,file);
 
 Invariants unpackAndParseInvariants(){
-	loc file = |project://SavingsAccount/input/invariants/invariants.invs|;
+	loc file = |project://FormalSpecificationLanguage/input/invariants/invariants.invs|;
 	return parse(#start[Invariants],file).args[1];
 }

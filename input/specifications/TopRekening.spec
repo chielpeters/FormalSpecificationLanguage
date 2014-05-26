@@ -1,5 +1,8 @@
 Specification TopRekening
 
+Fields{
+	amount : Integer
+}
 
 Events{
   openAccount(1000)

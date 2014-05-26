@@ -9,18 +9,18 @@ import List;
 alias VarMap = map[Var,Expr];
 alias EventMap = map[EventName,Event];
 alias Properties = set[Field];
-alias Info = tuple[EventName name, VarMap vm, EventMap em,Properties p];
+alias Info = tuple[SpecificationName specname,EventName name, VarMap vm, EventMap em,Properties p];
 
-Info initInfo(EventName name, VarMap vm, EventMap em,Properties p) = <name, vm, em,p>;
-Info initInfo(EventName name, list[Expr] args, EventMap em,Properties p) = <name,setVarMap(args,em[name]),em,p>;
+Info initInfo(SpecificationName specname,EventName name, VarMap vm, EventMap em,Properties p) = <specname,name, vm, em,p>;
+Info initInfo(SpecificationName specname,EventName name, list[Expr] args, EventMap em,Properties p) = <specname,name,setVarMap(args,em[name]),em,p>;
 
-Info addVars(Info i, VarMap vm) = <i.name, i.vm+vm, i.em,i.p>;
-Info addProperties(Info i, Properties p) = <i.name,i.vm,i.em,i.p+p>;
-Info changeEventName(EventName name,Info i) = <name,i.vm,i.em,i.p>;
+Info addVars(Info i, VarMap vm) = <i.specname,i.name, i.vm+vm, i.em,i.p>;
+Info addProperties(Info i, Properties p) = <i.specname,i.name,i.vm,i.em,i.p+p>;
+Info changeEventName(EventName name,Info i) = <i.specname,name,i.vm,i.em,i.p>;
 
 EventMap getEventMap(Events events) = (event.sig.name : event | event <- events.events);
 
-VarMap oldNow() = ( [Var]"now" : [Expr]"s.now", [Var]"this" : [Expr]"s");
+VarMap oldNow() = ( [Var]"now" : [Expr]"old.now", [Var]"this" : [Expr]"old");
 VarMap thisNow() = ( [Var]"now" : [Expr]"this.now"); 
 
 VarMap setVarMap(list[Expr] args, Event event){

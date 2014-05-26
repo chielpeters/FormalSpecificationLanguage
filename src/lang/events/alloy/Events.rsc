@@ -11,7 +11,7 @@ import List;
 import String;
 
 str event2alloy(Event e, Info i){
-	str event = "pred SavingsAccount.<i.name> [ s : SavingsAccount <(/Parameters p := e.param) ? ","+functionargs2alloy(p.args):"">]{
+	str event = "pred <i.specname>.<i.name> [ old : <i.specname> <(/Parameters p := e.param) ? ","+functionargs2alloy(p.args):"">]{
 	'  <(/Pre pre := e.pre) ? addComment("PRECONDITIONS")+precond2alloy(pre,i):"">
 	'  <(/Post post := e.post) ? addComment("POSTCONDITIONS")+postcond2alloy(post,i):"">
 	'  <notchangedproperties2alloy(e,i.em,i.p,"s","this")>
