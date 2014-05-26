@@ -7,6 +7,6 @@ start[Functions] parseFunctions(loc file) = parse(#start[Functions],file);
 start[Functions] parseFunctions(str x, loc file) = parse(#start[Functions],x,file);
 
 Functions unpackAndParseFunctions(){
-	loc file = |project://SavingsAccount/input/functions/functions.fns|;
+	loc file = |project://FormalspecifcationLanguage/input/functions/functions.fns|;
 	return parse(#start[Functions],file).args[1];
 }
