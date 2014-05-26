@@ -1,7 +1,7 @@
 module lang::invariants::\syntax::Invariants
 
-extend lang::savingsaccounts::\syntax::Lexical;
-extend lang::savingsaccounts::\syntax::Expressions;
+extend lang::specifications::\syntax::Lexical;
+extend lang::specifications::\syntax::Expressions;
 
 start syntax Invariants = Invariant* invariants;
 syntax Invariant = @Foldable "Invariant" InvariantName name "{" InvariantDecl decl "}";

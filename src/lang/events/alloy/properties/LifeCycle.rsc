@@ -1,7 +1,7 @@
 module lang::events::alloy::properties::LifeCycle
 
-import lang::savingsaccounts::alloy::utils::Info;
-import lang::savingsaccounts::\syntax::Lexical;
+import lang::specifications::alloy::utils::Info;
+import lang::specifications::\syntax::Lexical;
 import Node;
 import String;
 

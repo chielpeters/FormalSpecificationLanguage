@@ -2,9 +2,9 @@ module lang::events::alloy::properties::Properties
 
 import lang::events::alloy::properties::Expressions;
 import lang::events::alloy::properties::LifeCycle;
-import lang::savingsaccounts::alloy::utils::Info;
-import lang::savingsaccounts::alloy::utils::StringTemplates;
-import lang::savingsaccounts::\syntax::Lexical;
+import lang::specifications::alloy::utils::Info;
+import lang::specifications::alloy::utils::StringTemplates;
+import lang::specifications::\syntax::Lexical;
 import lang::events::\syntax::Events;
 import List;
 

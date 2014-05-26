@@ -7,6 +7,12 @@ sig Percentage{
  percent : Int
 }
 
+
+fun lowestViablePercentage[ amount : Int] : Int{
+ min[{i :Int | amount.mul[i].div[100] > 0 && i >0}]
+}
+
+
 fun getPercentage[Npercent : Int] : Percentage{
  {p : Percentage | p.percent = Npercent}
 }
@@ -16,7 +22,7 @@ fun Filter[start : Percentage, end : Percentage] : Percentage{
 }
 
 fun mul[p : Percentage, x : Int] : Percentage {getPercentage[p.percent.mul[x]]}
-fun mul[x : Int,p : Percentage] : Int {p.percent.mul[x].div[100]}
+fun mul[x : Int,p : Percentage] : Int {p.percent.div[lowestViablePercentage[x]].mul[x.mul[lowestViablePercentage[x]].div[100]]}
 fun mul[p1 : Percentage, p2 : Percentage] : Percentage { getPercentage[p1.percent.mul[p2.percent].div[100]]}
 
 
@@ -49,10 +55,10 @@ fun find( int2percentage : Int -> Percentage, value : Int) : Percentage{
 
 
 fact Percentages{
- all i : Int | one p : Percentage | i = p.percent 
+ all i : {i: Int | i.gt[-32] and i.lt[32]} | one p : Percentage | i = p.percent 
 }
 
 pred show{}
 
-run show{} for 6 Int,exactly 64 Percentage
+run show{} for 20 Int,exactly 64 Percentage
 

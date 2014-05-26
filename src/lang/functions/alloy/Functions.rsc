@@ -2,9 +2,9 @@ module lang::functions::alloy::Functions
 
 import lang::functions::\syntax::Functions;
 import lang::functions::alloy::Statements;
-import lang::savingsaccounts::alloy::utils::Info;
-import lang::savingsaccounts::alloy::utils::CalledFunctions;
-import lang::savingsaccounts::alloy::TypesAndLiterals;
+import lang::specifications::alloy::utils::Info;
+import lang::specifications::alloy::utils::CalledFunctions;
+import lang::specifications::alloy::TypesAndLiterals;
 import String;
 import List;
 

@@ -1,8 +1,8 @@
 module lang::events::\syntax::Events
 
 extend lang::functions::\syntax::Functions;
-extend lang::savingsaccounts::\syntax::Expressions;
-extend lang::savingsaccounts::\syntax::Lexical;
+extend lang::specifications::\syntax::Expressions;
+extend lang::specifications::\syntax::Lexical;
 
 start syntax Events = events: Event* events;
 

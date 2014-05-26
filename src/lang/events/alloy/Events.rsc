@@ -3,9 +3,9 @@ module lang::events::alloy::Events
 import lang::events::\syntax::Events;
 import lang::events::alloy::properties::Properties;
 import lang::events::alloy::CalledEvents;
-import lang::savingsaccounts::alloy::utils::Info;
-import lang::savingsaccounts::alloy::utils::StringTemplates;
-import lang::savingsaccounts::alloy::Expressions;
+import lang::specifications::alloy::utils::Info;
+import lang::specifications::alloy::utils::StringTemplates;
+import lang::specifications::alloy::Expressions;
 import lang::functions::alloy::Functions;
 import List;
 import String;

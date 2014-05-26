@@ -1,6 +1,6 @@
 module lang::functions::\syntax::Statements
 
-extend lang::savingsaccounts::\syntax::Expressions;
+extend lang::specifications::\syntax::Expressions;
 
 syntax Statement 
   = bracket "(" Statement ")"

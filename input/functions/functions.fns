@@ -2,6 +2,7 @@
 # Date Functions
 ################################################################
 
+
 isPayOutDate[Date date, Date payoutdate, Freq freq] : Boolean =
 	case freq {
 		Daily => True;
@@ -19,7 +20,7 @@ isPayOutDate[Date date, Date payoutdate, Freq freq] : Boolean =
 rate[map[Integer : Percentage] interestRates, Integer amount] : Percentage = 1%;
 
 interest[Integer maximum, map[Integer : Percentage] interestRates, map[Date : Integer] balance, Date start, Date end] : Integer =
-	sum(min[balance[date]*rate[interestRates,balance[date]],maximum]/daysInYear[date] | date <- {start ... end});
+	sum(min[balance[date],maximum]*rate[interestRates,balance[date]]/daysInYear[date] | date <- {start ... end});
 
 interest[Integer maximum, map[Integer : Percentage] interestRates, Percentage bonusrate, map[Date : Integer] balance, Date start, Date end] : Integer =
 	balance[start] <= balance[end] ? sum((min[balance[date],maximum]*(rate[interestRates,balance[date]]+bonusrate))/daysInYear[date] | date <- {start ... end}); : interest[maximum,interestRates,balance,start,end];

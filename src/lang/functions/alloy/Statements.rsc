@@ -1,8 +1,8 @@
 module lang::functions::alloy::Statements
 
-import lang::savingsaccounts::alloy::Expressions;
-import lang::savingsaccounts::alloy::TypesAndLiterals;
-import lang::savingsaccounts::alloy::utils::Info;
+import lang::specifications::alloy::Expressions;
+import lang::specifications::alloy::TypesAndLiterals;
+import lang::specifications::alloy::utils::Info;
 import lang::functions::\syntax::Statements;
 import String;
 import IO;

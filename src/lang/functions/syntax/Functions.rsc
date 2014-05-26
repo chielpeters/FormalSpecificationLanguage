@@ -1,7 +1,7 @@
 module lang::functions::\syntax::Functions
 
 extend lang::functions::\syntax::Statements;
-extend lang::savingsaccounts::\syntax::Lexical;
+extend lang::specifications::\syntax::Lexical;
 
 start syntax Functions = Function+ functions;
 

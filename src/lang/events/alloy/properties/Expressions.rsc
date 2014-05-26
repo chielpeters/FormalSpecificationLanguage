@@ -1,7 +1,7 @@
 module lang::events::alloy::properties::Expressions
 
-import lang::savingsaccounts::\syntax::Expressions;
-import lang::savingsaccounts::alloy::utils::Info;
+import lang::specifications::\syntax::Expressions;
+import lang::specifications::alloy::utils::Info;
 
 Properties changedProperties((Expr)`this <Fields f>`) = first(f); 
 Properties changedProperties((Expr)`this <Fields f> [<ExprList el>]`) = first(f); 

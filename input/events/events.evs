@@ -6,12 +6,12 @@
 
 withdraw(Integer -> Integer penalty = noPenalty) 
 parameters		: Integer amount
-preconditions	: this.balance[now] >= amount, amount > 0
+preconditions	: this.balance[now] >= amount, amount >= 0
 postconditions	: this.balance[now] == old this.balance[now] - amount
 
 futureWithdrawal(Integer -> Integer penalty = noPenalty)
 parameters		: Integer amount, Date date
-preconditions	: this.balance[date] > amount, amount > 0, date > now
+preconditions	: this.balance[date] > amount, amount > 0, date >= now
 postconditions	: this.balance[date] == old this.balance[date] - amount
 
 periodicWithdrawal()
@@ -22,7 +22,7 @@ postconditions	: ( futureWithdrawal()[amount,date+period*i]| i <- {0...(times-1)
 deposit(Integer -> Integer penalty = noPenalty)
 parameters		: Integer amount
 preconditions	: amount > 0
-postconditions	: this.balance[now] == old this.balance[now] + amount*(1-penalty[amount])
+postconditions	: this.balance[now] == old this.balance[now] + amount
 
 futureDeposit(Integer -> Integer penalty = noPenalty)
 parameters		: Integer amount, Date date
@@ -61,8 +61,10 @@ parameters		: Freq freq , Integer t
 preconditions	: freq in payoutFreq, t in terms
 postconditions	: this.balance == (now : 0), this.payoutfreq == freq, this.term == t, this.startDate == now
 
-open()
-postconditions 	: this.balance == (now : 0)
+openAccount(Integer minimumInleg = 0)
+parameters		: Integer inleg
+preconditions	: inleg >= minimumInleg
+postconditions 	: this.balance == (now : inleg)
 
 cancelOpen()
 preconditions	: this.startDate > now-14*Day

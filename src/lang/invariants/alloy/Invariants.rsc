@@ -1,8 +1,8 @@
 module lang::invariants::alloy::Invariants
 
 import lang::invariants::\syntax::Invariants;
-import lang::savingsaccounts::\syntax::SavingsAccount;
-import lang::savingsaccounts::alloy::utils::StringTemplates;
+import lang::specifications::\syntax::Specifications;
+import lang::specifications::alloy::utils::StringTemplates;
 import List;
 
 alias InvariantMap = map[InvariantName name, Invariant inv];

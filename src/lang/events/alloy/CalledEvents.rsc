@@ -1,9 +1,9 @@
 module lang::events::alloy::CalledEvents
 
 import lang::events::\syntax::Events;
-import lang::savingsaccounts::\syntax::Lexical;
-import lang::savingsaccounts::alloy::Expressions;
-import lang::savingsaccounts::alloy::utils::Info;
+import lang::specifications::\syntax::Lexical;
+import lang::specifications::alloy::Expressions;
+import lang::specifications::alloy::utils::Info;
 import lang::events::alloy::properties::Properties;
 import lang::events::alloy::Events;
 import List;
