@@ -6,9 +6,9 @@ extend lang::specifications::\syntax::Lexical;
 
 start syntax Events = events: Event* events;
 
-syntax Event = @Foldable event: LifeCycleType? lct Signature sig Parameters? param Pre? pre  Post? post;
+syntax Event = @Foldable event:  Signature sig Parameters? param Pre? pre  Post? post;
 
-syntax Signature = eventsignature: EventName name "(" {EventArgument ","}* args")";
+syntax Signature = eventsignature: LifeCycleType? lct EventName name "(" {EventArgument ","}* args")";
 syntax EventArgument = eventargument: Type t Var var ("=" Expr exp)?;
 
 syntax Parameters = "parameters" ":" Arguments args;

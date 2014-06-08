@@ -31,6 +31,7 @@ str type2alloy((Type)`map[<Type key> : <Type val>]`) = "<type2alloy(key)> -\> <t
 str type2alloy((Type)`list[ <Type t>]`) = "seq <type2alloy(t)>";
 str type2alloy((Type)`set[ <Type t>]`) = "set <type2alloy(t)>";
 str type2alloy((Type)`Freq`) = "Frequency";
+str type2alloy((Type)`<CustomType t>`) = "<t>";
 
 int month2Int(Month m){
   str month = "<m>";

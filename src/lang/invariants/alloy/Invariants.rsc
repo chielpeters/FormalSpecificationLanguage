@@ -20,6 +20,6 @@ str invariant2alloy(Invariant inv){
 	'}";
 }
 
-str invariant2alloycommand(InvariantInstance inv,SpecificationName name) = "check <inv.name> <getCommandScope(name)>";
+str invariant2alloycommand(InvariantInstance inv,SpecificationName name, Imports imports) = "check <inv.name> <getCommandScope(name,imports)>";
 
 InvariantMap getInvariantMap(Invariants invs) = ( () | it + (inv.name : inv) | inv <- invs.invariants);

@@ -1,4 +1,6 @@
-Specification TopRekening
+import test
+
+Specification TopRekening extends test
 
 Fields{
 	balance 		: Date -> Integer
@@ -6,6 +8,7 @@ Fields{
 	startDate		: Date
 	interestFreq 	: Freq
 	now 			: Date
+	owner			: test
 }
 
 Events{

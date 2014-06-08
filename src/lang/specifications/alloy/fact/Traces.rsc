@@ -7,8 +7,8 @@ import lang::specifications::alloy::utils::StringTemplates;
 
 str fact2alloy(list[Event] evs,SpecificationName name){
 return "fact traces {
+	'  first. (<name> \<: opened) = 0
 	'  all old: <name> - last | let new = next[old]{
-	'    first.opened = 0
 	'    <vardecl2alloy(evs)> <events2alloy(evs)>
 	'  }
 	'}\n";

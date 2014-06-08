@@ -10,3 +10,7 @@ Invariants unpackAndParseInvariants(){
 	loc file = |project://FormalSpecificationLanguage/input/invariants/invariants.invs|;
 	return parse(#start[Invariants],file).args[1];
 }
+
+Invariants unpackAndParseInvariants(loc folder){
+	return parse(#start[Invariants],folder + "invariants/invariants.invs").args[1];
+}

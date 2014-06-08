@@ -4,7 +4,7 @@ import lang::specifications::\syntax::Specifications;
 
 str getModuleName(SpecificationName name) = "module <name>\n";
 
-str getImports(SpecificationName name){
+str getNativeImports(SpecificationName name){
 return "
 	'open util/ordering[<name>]
 	'open util/integer
@@ -12,12 +12,15 @@ return "
 	'open types/period
 	'open types/frequency
 	'open types/percentage
-\n";
+	'";
 }
 
-str predShow(SpecificationName name) = "pred show{} \nrun show <getCommandScope(name)>\n";
-str getCommandScope(SpecificationName name) = "for 5 <name>, exactly 5 Date, 7 Int, exactly 128 Percentage";
-str balancePropertyCondition(str old, str new) = "<old>.balance in <new>.balance";
+str showCommand(SpecificationName name,Imports imports) = "run {} <getCommandScope(name,imports)>\n";
+str getCommandScope(SpecificationName name, Imports imports) = 
+	"for 5 <name>, <getCommandScope(imports)> exactly 5 Date, 7 Int, exactly 30 Percentage";
+
+str getCommandScope(Imports imports) = ("" | it + " 5 <i.filename>" + " , " | i <- imports.imports);
+
 
 str addComment(str com) = "// <com> \n";
 str addMLComment(str com) = "/********************\n* <com>\n********************/\n\n";

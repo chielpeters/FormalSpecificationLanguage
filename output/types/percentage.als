@@ -55,7 +55,7 @@ fun find( int2percentage : Int -> Percentage, value : Int) : Percentage{
 
 
 fact Percentages{
- all i : {i: Int | i.gt[-32] and i.lt[32]} | one p : Percentage | i = p.percent 
+ all i : {i: Int | i.gt[10] and i.lt[10]} | one p : Percentage | i = p.percent 
 }
 
 pred show{}

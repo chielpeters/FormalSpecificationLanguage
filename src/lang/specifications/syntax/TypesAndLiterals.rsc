@@ -16,12 +16,13 @@ syntax Type
   | @category="Type" period: "Period"
   | @category="Type" integer: "Integer"
   | @category="Type" date: "Date"
-  | @category="Type" feq : "Freq"
+  | @category="Type" freq : "Freq"
   | @category="Type" percentage: "Percentage"
   | @category="Type" maptype: "map" "[" Type ":" Type "]"
   | @category="Type" listtype: "list" "[" Type "]"
   | @category="Type" settype: "set" "[" Type "]"
   | @category="Type" functiontype: Type "-\>" Type
+  > @category="Type" customtype: CustomType
   ;
 
 /*********************************************

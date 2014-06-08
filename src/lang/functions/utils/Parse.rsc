@@ -10,3 +10,7 @@ Functions unpackAndParseFunctions(){
 	loc file = |project://FormalSpecificationLanguage/input/functions/functions.fns|;
 	return parse(#start[Functions],file).args[1];
 }
+
+Functions unpackAndParseFunctions(loc folder){
+	return parse(#start[Functions],folder + "functions/functions.fns").args[1];
+}

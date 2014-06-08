@@ -1,8 +1,7 @@
-Make an import part 
+"Invariant" gone
 
-Think of a simple example with two classes
+Invariants can be Expr?
+
 Generate Trace Paths Alloy
-Search for SMT Solver for math problems
-
-
-Optional FieldDecl
+Think of a simple example with two classes : TrafficLight + Junction
+Assert insert .opened clause

@@ -8,6 +8,7 @@ import lang::specifications::alloy::fact::Traces;
 import lang::specifications::alloy::Expressions;
 import lang::specifications::alloy::Signature;
 import lang::specifications::\syntax::Specifications;
+import lang::specifications::utils::Parse;
 
 import lang::events::alloy::Events;
 import lang::events::\syntax::Events;
@@ -26,17 +27,25 @@ import List;
 import IO;
 
 
-void specification2alloy(Specification spec, bool log){
+void specification2alloy(Specification spec,loc folder, bool log){
 
-	Events evs = unpackAndParseEvents();
-	Functions funcs = unpackAndParseFunctions();
-	Invariants invariants = unpackAndParseInvariants();
+	for(i <- spec.imports.imports){
+		fileLoc = folder + "<i.filename>.spec";
+		specification2alloy(parseSpecification(fileLoc),folder,false);
+	}
+
+	Events evs = unpackAndParseEvents(folder.parent);
+	Functions funcs = unpackAndParseFunctions(folder.parent);
+	Invariants invariants = unpackAndParseInvariants(folder.parent);
 	
 	EventMap em = getEventMap(evs);
 	list[Event] calledevents = [ em[e.name] | e <- spec.evs.events]; 
 	CalledFunctions cf = getCalledFunctions(calledevents,funcs,spec);
 	
-	str body = getModuleName(spec.name) + getImports(spec.name) + signature2alloy(spec.name,spec.fields.fields);
+	str body = getModuleName(spec.name) + getNativeImports(spec.name);
+	
+	body += (""| it + "open " + "<i.filename>" + "\n" | i <- spec.imports.imports) + "\n"; 
+	body += signature2alloy(spec.name,spec.fields.fields);
 	
 	body += addMLComment("EVENTS");
 	body += ("" | it + event2alloy(em[ev.name],spec.fields.fields,initInfo(spec.name,exprlist2list(ev.el),ev.name,em)) + "\n\n"  | ev <- spec.evs.events);
@@ -53,9 +62,9 @@ void specification2alloy(Specification spec, bool log){
 	}
 	
 	body += addMLComment("COMMANDS");
-	body += predShow(spec.name);
+	body += showCommand(spec.name,spec.imports);
 	if(/InvariantInstances invs := spec){
-		body += (""|it + invariant2alloycommand(inv,spec.name) + "\n" | inv <- invs.invariants);
+		body += (""|it + invariant2alloycommand(inv,spec.name,spec.imports) + "\n" | inv <- invs.invariants);
 	}
 	
 	loc output = getOutputAlloyFileLocation(spec.name);
