@@ -1,0 +1,7 @@
+#TRAFFICLIGHT
+
+changeColor[Integer color] : Integer = color == 1 ? 0; : 1;
+
+#JUNCTION
+
+amountOfGreens[set[TrafficLight] lights] : Integer = sum(x.color | x <- lights); 
