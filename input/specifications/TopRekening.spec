@@ -1,6 +1,4 @@
-import test
-
-Specification TopRekening extends test
+Specification TopRekening
 
 Fields{
 	balance 		: Date -> Integer
@@ -8,13 +6,14 @@ Fields{
 	startDate		: Date
 	interestFreq 	: Freq
 	now 			: Date
-	owner			: test
 }
 
+
 Events{
-  openAccount()
+  openAccount(50)
   withdraw()
   deposit()
+  interest((0 : 3%),Yearly,1 Dec,100)
   close()
 }
 

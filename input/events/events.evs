@@ -4,39 +4,39 @@
 
 withdraw(Integer -> Integer penalty = noPenalty) 
 parameters		: Integer amount
-preconditions	: this.balance[now] >= amount, amount >= 0
-postconditions	: this.balance[now] == old this.balance[now] - amount
+preconditions	: this.balance[now] >= amount, amount > 0
+postconditions	: this.balance[now] == old this.balance[now] - amount, this.now == next[old this.now], old this.balance in this.balance, size[this.balance] == (size[old this.balance]) + 1
 
 deposit(Integer -> Integer penalty = noPenalty)
 parameters		: Integer amount
 preconditions	: amount > 0
-postconditions	: this.balance[now] == old this.balance[now] + amount
+postconditions	: this.balance[now] == old this.balance[now] + amount, this.now == next[old this.now], old this.balance in this.balance, size[this.balance] == (size[old this.balance]) + 1
 
 ##################################################################
 # Open and Close
 ##################################################################
 
-final close()
-preconditions 	: this.balance[this.now] == 0
-
-initial openFixed(set[Freq] payoutFreq = {Yearly}, set[Integer] terms = {Inf})
-parameters		: Freq freq , Integer t
-preconditions	: freq in payoutFreq, t in terms
-postconditions	: this.balance == (now : 0), this.payoutfreq == freq, this.term == t, this.startDate == now
+initial openFixedAccount(set[Freq] payoutFreq = {Yearly}, set[Integer] terms = {Inf}, Integer minimumInleg = 0)
+parameters		: Integer inleg, Freq freq , Integer t
+preconditions	: freq in payoutFreq, t in terms, inleg >= minimumInleg
+postconditions	: this.balance == (this.now : inleg), this.interestFreq == freq, this.term == t, this.startDate == this.now
 
 initial openAccount(Integer minimumInleg = 0)
 parameters		: Integer inleg
 preconditions	: inleg >= minimumInleg
-postconditions 	: this.balance == (now : inleg)
+postconditions 	: this.balance == (this.now : inleg)
 
-final cancelOpen()
-preconditions	: this.startDate > now-14*Day && this.balance[this.now] == 0
+final close()
+preconditions 	: this.balance[this.now] == 0
+
+final cancelOpen(Integer numberOfDays = 0)
+preconditions	: this.startDate > this.now-numberOfDays*Day, this.balance[this.now] == 0
 
 final forcedClose(Integer minimum)
-preconditions	: this.balance[now] < minimum
+preconditions	: this.balance[this.now] < minimum
 
 final closeAfterDuration()
-preconditions	: now > this.startDate + this.term*Year
+preconditions	: this.now > this.startDate + this.term*Year
 
 
 ##################################################################
@@ -45,9 +45,9 @@ preconditions	: now > this.startDate + this.term*Year
 
 interest(map[Integer : Percentage] interestRates, Freq freq = Yearly, Date payoutdate = 1 Dec, Integer maximum = 100)
 preconditions	: isPayOutDate[now,payoutdate,freq]
-postconditions	: this.balance[now] == old this.balance[now] + interest[maximum,interestRates,this.balance,now-freq,now]
+postconditions	: this.balance[now] == old this.balance[now] + interest[maximum,interestRates,this.balance,now-freq,now], this.now == next[old this.now], old this.balance in this.balance, size[this.balance] == (size[old this.balance]) + 1
 
 
 interestBonus(map[Integer : Percentage] interestRates,Percentage bonusRate, Date payoutdate = 1 Dec, Integer maximum = 100)
 preconditions	: isPayOutDate[now,payoutdate,Yearly]
-postconditions	: this.balance[now] == old this.balance[now] + InterestBonus[maximum,interestRates, bonusRate,this.balance,now-Year,now]
+postconditions	: this.balance[now] == old this.balance[now] + InterestBonus[maximum,interestRates, bonusRate,this.balance,now-Year,now], this.now == next[old this.now], old this.balance in this.balance, size[this.balance] == (size[old this.balance]) + 1

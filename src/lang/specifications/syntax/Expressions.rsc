@@ -3,8 +3,12 @@ module lang::specifications::\syntax::Expressions
 extend lang::specifications::\syntax::TypesAndLiterals;
 extend lang::specifications::\syntax::Lexical;
 
+
 syntax Expr
   = bracket "(" Expr ")"
+  > left (
+  	quantexpr : QuantifiedDecl
+  )
   > non-assoc (	
     var : Var
     | functioncall : FunctionName "[" ExprList "]"
@@ -53,3 +57,8 @@ syntax LiteralPlus =
 
 syntax MapElements = {MapElement ","}* elems;
 syntax MapElement = Expr key ":" Expr val;
+
+syntax QuantifiedDecl = Scope+ scope "{" Expr e "}";
+syntax Scope = Quant q Decl d "|";
+syntax Quant = "all" | "no" | "some" | "lone" | "one";
+syntax Decl = Var v ":" Expr e;

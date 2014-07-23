@@ -16,7 +16,7 @@ pred TrafficLight.initTrafficLight [ old : TrafficLight ]{
   
   // POSTCONDITIONS 
   this.color = 0
-  // PROPERTY CONDITIONS 
+  // FRAME CONDITIONS 
   this.opened = 1 
   old.opened = 0
   
@@ -27,7 +27,7 @@ pred TrafficLight.initTrafficLight [ old : TrafficLight ]{
 pred TrafficLight.sameColor [ old : TrafficLight ]{
   
   
-  // PROPERTY CONDITIONS 
+  // FRAME CONDITIONS 
   old.opened = 1 
   this.opened = old.opened
   this.color = old.color
@@ -39,7 +39,7 @@ pred TrafficLight.changeColor [ old : TrafficLight ]{
   
   // POSTCONDITIONS 
   this.color = changeColor[old.color]
-  // PROPERTY CONDITIONS 
+  // FRAME CONDITIONS 
   old.opened = 1 
   this.opened = old.opened
   

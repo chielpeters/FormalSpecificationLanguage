@@ -4,4 +4,4 @@ changeColor[Integer color] : Integer = color == 1 ? 0; : 1;
 
 #JUNCTION
 
-amountOfGreens[set[TrafficLight] lights] : Integer = sum(x.color | x <- lights); 
+amountOfGreens[TrafficLight t1, TrafficLight t2] : Integer = t1.color + t2.color;

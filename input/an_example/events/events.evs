@@ -1,22 +1,25 @@
 #TRAFFICLIGHT
 
-changeColor()
-postconditions: this.color == changeColor[old this.color] 
 
-sameColor()
-
+# Initial event set traffic light to red
 initial initTrafficLight()
 postconditions: this.color == 0
 
+changeColor()
+preconditions: this.color == 0 || this.color == 1
+postconditions: this.color == changeColor[old this.color] 
+
+sameColor()
+preconditions: this.color == 0 || this.color == 1
+
 #JUNCTION
 
-#Todo Set of // All t.opened
 initial init()
-parameters: set[TrafficLight] trafficlights
-postconditions: this.lights == trafficlights, amountOfGreens[trafficlights] == 0
+parameters: TrafficLight l, TrafficLight r
+preconditions: l.opened == 1, r.opened == 1 , amountOfGreens[this.left,this.right] == 0
+postconditions: this.left == l, this.right == r
 
-#Todo all t : TrafficLight | next // { all t : old.this.lights | next[t]}
 changeJunctionState()
-postconditions: size[old this.lights] == size[this.lights],amountOfGreens[this.light] <2 
+postconditions: this.left == next[old this.left], this.right == next[old this.right], amountOfGreens[this.left,this.right] <= 1 
 
 

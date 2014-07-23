@@ -9,6 +9,8 @@ import List;
 
 str expr2alloy((Expr) `(<Expr e>)`,VarMap vm) = "( " + expr2alloy(e,vm) + " )";
 str expr2alloy((Expr)`<Var v>`,VarMap vm) = var2alloy(v,vm);
+str expr2alloy((Expr)`<QuantifiedDecl d>`, VarMap vm) = quantifieddecl2alloy(d,vm);
+str expr2alloy((Expr)`size[ <Expr e>]`,VarMap vm) = "#<expr2alloy(e,vm)>";
 str expr2alloy((Expr)`<FunctionName fn> [ <ExprList el> ]`,VarMap vm) = var2alloy([Var]"<fn>",vm) + "[" + exprlist2alloy(el,vm) + "]";
 str expr2alloy((Expr) `<PropertyOfVar pv>`,VarMap vm) = propertyofvar2alloy(pv,vm);
 str expr2alloy((Expr) `old <PropertyOfVar pv>`,VarMap vm) = propertyofvar2alloy(pv,vm+oldNow());
@@ -44,6 +46,15 @@ str exprlist2alloy(ExprList explist,VarMap vm) = intercalate(", ", [ expr2alloy(
 str propertyofvar2alloy((PropertyOfVar)`<Var v> <Fields f>`,VarMap vm) = var2alloy(v,vm) + "<f>";
 str propertyofvar2alloy((PropertyOfVar)`<Var v> <Fields f> [<ExprList el> ]`,VarMap vm) = var2alloy(v,vm) + "<f>" + "[" + exprlist2alloy(el,vm) + "]";
 str var2alloy(Var v,VarMap vm) = (v in vm) ? expr2alloy(vm[v],vm) : "<v>"; 
+
+str quantifieddecl2alloy(QuantifiedDecl decl,VarMap vm){
+	str scope = (""| it + scope2alloy(s,vm) + " |" |s <- decl.scope);
+	return scope + expr2alloy(decl.e,vm);
+}
+
+str scope2alloy(Scope s,VarMap vm){
+	return "<s.q> <s.d.v> : <expr2alloy(s.d.e,vm)>";
+}
 
 
 list[Expr] exprlist2list(ExprList el) = [ e | e <- el.exprs ];

@@ -64,7 +64,7 @@ public class Traces {
             String json = "";
             assert sol.satisfiable();
             
-            for(int run = 0 ;run < 10; run++){
+            for(int run = 0 ;run < 5; run++){
             	sol = sol.next();
             	for(ExprVar a:sol.getAllAtoms())   { world.addGlobal(a.label, a); }
             	for(ExprVar a:sol.getAllSkolems()) { world.addGlobal(a.label, a); }
@@ -80,7 +80,7 @@ public class Traces {
 
             	String tmp2 = gson.toJson(res);
             	json += tmp2;
-            	if(run != 9){ json +=",";}
+            	if(run != 2){ json +=",";}
 
             }
             json = "{traces: [" + json + "]}";
@@ -93,92 +93,90 @@ public class Traces {
 		}		
         return vf.string("");
 	}
-	
-	
-	private static boolean isTrue(Func pred, int i, A4Solution sol, Module world) throws Exception {
+		
+		
+		private static boolean isTrue(Func pred, int i, A4Solution sol, Module world) throws Exception {
 
-		if(pred.decls.size() >=2 && pred.decls.get(0).expr.type().toString().contains(sigName) && pred.decls.get(1).expr.type().toString().contains(sigName)) {
-			String expression = pred.label + "[" + sigName + "$" + new Integer(i+1).toString() + "," + sigName + "$" + new Integer(i).toString();
-			for(String param : getAdditionalParameters(pred,i)){expression += "," + param;}
-			expression += "]";
-			System.out.println(expression);
-			return (boolean) sol.eval(CompUtil.parseOneExpression_fromString(world, expression));
+			if(pred.decls.size() >=2 && pred.decls.get(0).expr.type().toString().contains(sigName) && pred.decls.get(1).expr.type().toString().contains(sigName)) {
+				String expression = pred.label + "[" + sigName + "$" + new Integer(i+1).toString() + "," + sigName + "$" + new Integer(i).toString();
+				for(String param : getAdditionalParameters(pred,i)){expression += "," + param;}
+				expression += "]";
+				//System.out.println(expression);
+				return (boolean) sol.eval(CompUtil.parseOneExpression_fromString(world, expression));
+				
+			}
+			return false;
+		}
+
+		  static List<String> eval(List<String> params,A4Solution sol, Module world) throws Exception{
+			List<String> res = new ArrayList<String>();
+			for(String param : params){
+				 String tmp = AtomToJson(param,sol,world);
+				 res.add(tmp);
+			}
+			return res;
+		}
+		
+		 static List<String> getAdditionalParameters(Func pred, int i){
+			ConstList<Decl> decls = pred.decls;
+			ArrayList<String> a = new ArrayList<String>();
+			List<String> res = new ArrayList<String>();
+			for(Decl decl : decls){
+				a.add(Decl2ArgumentString(decl,a));
+			}
+			for(String elem : a){
+				if(a.indexOf(elem) > 1){
+					res.add(sigName + "$" + new Integer(i).toString() + "." + "$" + elem);
+				}
+			}
+			return res;
+		}
+		
+		 static SafeList<Func> getAllPredicates(Module world){
+	    	SafeList<Func> funcs = world.getAllFunc();
+	    	SafeList<Func> preds = new SafeList<Func>();
+	    	for(Func func : funcs){
+	    		if(func.isPred) preds.add(func);
+	    	}
+	    	return preds;
+	    }
+		
+		static String Decl2ArgumentString(Decl d, List<String> prevs){
+			String arg = d.get().type().toString();
+			arg = arg.substring(1, arg.length()-1);
+			if(arg.contains("/")){
+				arg = arg.substring(arg.lastIndexOf("/")+1);
+			}
+			arg = arg.substring(0, 1).toLowerCase();
+			Integer i = 1;
+			String res = arg;
+			while(prevs.contains(res)){
+				res = arg + i.toString();
+				i++;
+			}
+			return res;
+		}	
+
+		static String A4TupleSetToJson(A4TupleSet ts, A4Solution sol, Module world) throws Exception{
+			String res = "{";
+			Iterator<A4Tuple> it = ts.iterator();
+			while(it.hasNext()){
+				A4Tuple t = it.next();
+				for(int i = 0 ; i<t.arity();i++){
+					res += t.sig(i) + ":" + t.atom(i);
+				}
+			}
+			return res + "}";
 			
 		}
-		return false;
-	}
 
-	  List<String> eval(List<String> params,A4Solution sol, Module world) throws Exception{
-		List<String> res = new ArrayList<String>();
-		for(String param : params){
-			 String tmp = AtomToJson(param,sol,world);
-			 res.add(tmp);
-		}
-		return res;
-	}
-	
-	 static List<String> getAdditionalParameters(Func pred, int i){
-		ConstList<Decl> decls = pred.decls;
-		ArrayList<String> a = new ArrayList<String>();
-		List<String> res = new ArrayList<String>();
-		for(Decl decl : decls){
-			a.add(Decl2ArgumentString(decl,a));
-		}
-		for(String elem : a){
-			if(a.indexOf(elem) > 1){
-				res.add(sigName + "$" + new Integer(i).toString() + "." + "$" + elem);
+
+		static String AtomToJson(String atom, A4Solution sol, Module world) throws Exception {
+			Expr e = CompUtil.parseOneExpression_fromString(world, atom);
+			if(sol.eval(e) instanceof A4TupleSet){
+				return A4TupleSetToJson((A4TupleSet)sol.eval(e),sol,world);
 			}
+			String tmp = sol.eval(e).toString();
+			return tmp.substring(1, tmp.length()-1);
 		}
-		return res;
 	}
-	
-	 static SafeList<Func> getAllPredicates(Module world){
-    	SafeList<Func> funcs = world.getAllFunc();
-    	SafeList<Func> preds = new SafeList<Func>();
-    	for(Func func : funcs){
-    		if(func.isPred) preds.add(func);
-    	}
-    	return preds;
-    }
-	
-	static String Decl2ArgumentString(Decl d, List<String> prevs){
-		String arg = d.get().type().toString();
-		arg = arg.substring(1, arg.length()-1);
-		if(arg.contains("/")){
-			arg = arg.substring(arg.lastIndexOf("/")+1);
-		}
-		arg = arg.substring(0, 1).toLowerCase();
-		Integer i = 1;
-		String res = arg;
-		while(prevs.contains(res)){
-			res = arg + i.toString();
-			i++;
-		}
-		return res;
-	}	
-
-	String A4TupleSetToJson(A4TupleSet ts, A4Solution sol, Module world) throws Exception{
-		String res = "{";
-		Iterator<A4Tuple> it = ts.iterator();
-		while(it.hasNext()){
-			A4Tuple t = it.next();
-			for(int i = 0 ; i<t.arity();i++){
-				res += t.sig(i) + ":" + AtomToJson(t.atom(i),sol,world);
-			}
-		}
-		return res + "}";
-		
-	}
-
-
-	String AtomToJson(String atom, A4Solution sol, Module world) throws Exception {
-		Expr e = CompUtil.parseOneExpression_fromString(world, atom);
-		if(sol.eval(e) instanceof A4TupleSet){
-			return A4TupleSetToJson((A4TupleSet)sol.eval(e),sol,world);
-		}
-		String tmp = sol.eval(e).toString();
-		return tmp.substring(1, tmp.length()-1);
-	}
-}
-
-

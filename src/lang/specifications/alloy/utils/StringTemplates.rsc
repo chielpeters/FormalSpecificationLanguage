@@ -17,7 +17,7 @@ return "
 
 str showCommand(SpecificationName name,Imports imports) = "run {} <getCommandScope(name,imports)>\n";
 str getCommandScope(SpecificationName name, Imports imports) = 
-	"for 5 <name>, <getCommandScope(imports)> exactly 5 Date, 7 Int, exactly 30 Percentage";
+	"for 5 <name>, <getCommandScope(imports)> exactly 5 Date, 8 Int, exactly 30 Percentage";
 
 str getCommandScope(Imports imports) = ("" | it + " 5 <i.filename>" + " , " | i <- imports.imports);
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<featuremodel:FeatureModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:featuremodel="http://www.eclipse.org/featuremodel" id="_gdVNUO_REeOaBOhAXvPtag">
+  <root id="_haKB8O_REeOaBOhAXvPtag" name="Savingsaccount">
+    <children id="_iX_jMO_REeOaBOhAXvPtag" lower="1">
+      <features id="_iX9G8O_REeOaBOhAXvPtag" name="Balance"/>
+    </children>
+    <children id="_kbMxEO_REeOaBOhAXvPtag">
+      <features id="_kbK74O_REeOaBOhAXvPtag" name="Term"/>
+    </children>
+    <children id="_m3z9cO_REeOaBOhAXvPtag" lower="1">
+      <features id="_m3yIQO_REeOaBOhAXvPtag" name="StartDate"/>
+    </children>
+    <children id="_oYa0kO_REeOaBOhAXvPtag" lower="1">
+      <features id="_oYXKMO_REeOaBOhAXvPtag" name="Frequency"/>
+    </children>
+    <children id="_3UH-4O_REeOaBOhAXvPtag" lower="1">
+      <features id="_3UFioO_REeOaBOhAXvPtag" name="Interest Rates"/>
+    </children>
+    <children id="__FN8oO_REeOaBOhAXvPtag" lower="1">
+      <features id="__FMHcO_REeOaBOhAXvPtag" name="Interest">
+        <children id="_fyMwMO_SEeOaBOhAXvPtag" lower="1" upper="1">
+          <features id="_fyKT8O_SEeOaBOhAXvPtag" name="Fixed"/>
+          <features id="_kifPYO_SEeOaBOhAXvPtag" name="Variable">
+            <children id="_nxtkcO_SEeOaBOhAXvPtag" lower="1">
+              <features id="_nxrvQO_SEeOaBOhAXvPtag" name="Rules">
+                <children id="_uC7D0O_SEeOaBOhAXvPtag" lower="1">
+                  <features id="_uC5OoO_SEeOaBOhAXvPtag" name="Condition"/>
+                </children>
+                <children id="_uXmTUO_SEeOaBOhAXvPtag" lower="1">
+                  <features id="_uXlFMO_SEeOaBOhAXvPtag" name="Consequence"/>
+                </children>
+              </features>
+            </children>
+          </features>
+        </children>
+      </features>
+    </children>
+    <children id="_ayPdUO_SEeOaBOhAXvPtag" lower="1">
+      <features id="_ayNoIO_SEeOaBOhAXvPtag" name="Deposit/Withdraw">
+        <children id="_18uRoO_SEeOaBOhAXvPtag" lower="1">
+          <features id="_18sccO_SEeOaBOhAXvPtag" name="Rules">
+            <children id="_44s6kO_SEeOaBOhAXvPtag" lower="1">
+              <features id="_44rFYO_SEeOaBOhAXvPtag" name="Condition"/>
+            </children>
+            <children id="_6JRKkO_SEeOaBOhAXvPtag" lower="1">
+              <features id="_6JPVYO_SEeOaBOhAXvPtag" name="Consequence"/>
+            </children>
+          </features>
+        </children>
+      </features>
+    </children>
+  </root>
+</featuremodel:FeatureModel>

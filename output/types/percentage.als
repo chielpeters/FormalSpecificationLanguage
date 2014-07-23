@@ -7,6 +7,9 @@ sig Percentage{
  percent : Int
 }
 
+fun get( int2percentage : Int -> Percentage, value : Int) : Percentage{
+	max[ (prevs[value] + value) & ({int2percentage}.univ)].int2percentage
+}
 
 fun lowestViablePercentage[ amount : Int] : Int{
  min[{i :Int | amount.mul[i].div[100] > 0 && i >0}]
@@ -21,8 +24,16 @@ fun Filter[start : Percentage, end : Percentage] : Percentage{
  { p : Percentage | lte[start,p] and gte[end,p] }
 }
 
-fun mul[p : Percentage, x : Int] : Percentage {getPercentage[p.percent.mul[x]]}
-fun mul[x : Int,p : Percentage] : Int {p.percent.div[lowestViablePercentage[x]].mul[x.mul[lowestViablePercentage[x]].div[100]]}
+fun mul[p : Percentage, x : Int] : Int {
+	p.percent = 100 => x else
+	p.percent.div[lowestViablePercentage[x]].mul[x.mul[lowestViablePercentage[x]].div[100]]
+}
+
+fun mul[x : Int,p : Percentage] : Int {
+	p.percent = 100 => x else
+	p.percent.div[lowestViablePercentage[x]].mul[x.mul[lowestViablePercentage[x]].div[100]]
+}
+
 fun mul[p1 : Percentage, p2 : Percentage] : Percentage { getPercentage[p1.percent.mul[p2.percent].div[100]]}
 
 
@@ -49,16 +60,11 @@ fun min[int1 : Int, int2:Int] : Int { int1 < int2 => int1 else int2}
 fun max[p1 : Percentage, p2 : Percentage] : Percentage{ gte[p1,p2] => p1 else p2}
 fun max[int1 : Int, int2:Int] : Int { int1 < int2 => int2 else int1}
 
-fun find( int2percentage : Int -> Percentage, value : Int) : Percentage{
-	max[{prevs[value] + value} & ({int2percentage}.univ)].int2percentage
-}
-
-
 fact Percentages{
- all i : {i: Int | i.gt[10] and i.lt[10]} | one p : Percentage | i = p.percent 
+ all i : {i: Int | (i.gt[-10] and i.lt[10]) or (i.lte[100] and i.gte[90])} | one p : Percentage | i = p.percent 
 }
 
 pred show{}
 
-run show{} for 20 Int,exactly 64 Percentage
+run show{} for 8 Int,exactly 30 Percentage
 

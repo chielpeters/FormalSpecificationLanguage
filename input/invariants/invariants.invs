@@ -1,3 +1,5 @@
 Invariant Positive {
-	all s: TopRekening  | all d : Date | s.balance[d] >= 0
+	all s: TopRekening  | all d : Date | { 
+		s.balance[d] >= 0
+	}
 }
